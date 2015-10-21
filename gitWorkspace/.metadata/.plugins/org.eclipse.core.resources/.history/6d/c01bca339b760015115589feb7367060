@@ -1,0 +1,57 @@
+package server.database;
+
+import java.io.*;
+import java.util.*;
+import java.util.logging.*;
+
+/*
+ *	This is the import you need to use the Apache Commons IO library.
+ *	Look at the code marked {/*(**APACHE**)*/
+ //*/
+import org.apache.commons.io.*;
+
+import shared.model.*;
+import server.database.*;
+import server.*;
+
+import org.w3c.dom.*;
+
+import javax.xml.parsers.*;
+
+public class DataImporter {
+
+	
+	
+	public static void main(String[] args)
+	{
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		File xmlFile = new File(args[0]);
+		File dest = new File("Records");
+		
+		
+		try {
+			if(!xmlFile.getParentFile().getCanonicalPath().equals(dest.getCanonicalPath()))
+				FileUtils.deleteDirectory(dest);
+		
+			//	Copy the directories (recursively) from our source to our destination.
+			FileUtils.copyDirectory(xmlFile.getParentFile(), dest);
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(xmlFile); 
+		
+
+		doc.getDocumentElement().normalize();
+		Element root = doc.getDocumentElement();
+	}
+	
+	
+	
+	
+}

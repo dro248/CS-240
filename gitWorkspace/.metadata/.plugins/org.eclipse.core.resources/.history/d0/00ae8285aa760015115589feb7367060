@@ -1,0 +1,84 @@
+package server.database;
+
+import shared.model.User;
+
+import java.sql.*;
+
+public class UserDAO 
+{
+	
+	Database database;
+	Connection connection;
+	
+	public UserDAO(Database db)
+	{
+		database = db;
+		connection = db.getConnection();
+	}
+	
+	/**
+	 * Adds a user to the database.
+	 * @param newUser
+	 * @return Returns whether or not user is successfully added to database.
+	 */
+	public boolean addUser(User newUser) 
+	{ 
+		
+		return false; 
+	}
+	
+	/**
+	 * Check if username and password are contained in the database
+	 * @param username
+	 * @param password
+	 * @return Returns user with specified username & password is returned.
+	 */
+	public User getUser(String username, String password) { return null; }
+	
+	/**
+	 * Updates the specified user with updated fields.
+	 * @param updateUser
+	 * @return Returns whether or not user is successfully updated in database.
+	 */
+	public boolean updateUser(User updateUser) 
+	{
+		PreparedStatement stmt = null;
+		try {     
+			String sql = "update User " 
+						+ "set username = ?, password = ?, firstname = ?, lastname = ?, email = ?, recordsIndexed = ?, currentBatch = ?"
+						+ "where id = ?";
+			
+			stmt = connection.prepareStatement(sql); 
+			stmt.setString(1, updateUser.getUsername());     
+			stmt.setString(2, updateUser.getPassword());     
+			stmt.setString(3, updateUser.getFirstname());
+			stmt.setString(4, updateUser.getLastname());
+			stmt.setString(5, updateUser.getEmail());
+			stmt.setInt(6, updateUser.getRecordsIndexed());
+			// Set batchID?
+			
+     
+			
+			if (stmt.executeUpdate() == 1)
+			{
+				// OK
+			}
+			else
+			{
+				// ERROR 
+			}
+		}
+		catch (SQLException e) 
+		{     
+			// ERROR 
+		}	
+		finally 
+		{     
+			if (stmt != null) stmt.close(); 
+		}
+		
+		
+		return false;
+	}
+	
+}

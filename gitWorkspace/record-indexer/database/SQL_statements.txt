@@ -1,0 +1,68 @@
+drop table if exists Batch;
+
+CREATE TABLE Batch
+(
+ID integer not null primary key autoincrement,
+isAvailable boolean,
+filename text,
+projectID int
+);
+
+drop table if exists Cell;
+
+CREATE TABLE Cell
+(
+ID integer not null primary key autoincrement,
+RecordCoord int,
+FieldCoord int,
+parentID int,
+CellValue text
+);
+
+drop table if exists Field;
+
+CREATE TABLE Field
+(
+ID integer not null primary key autoincrement,
+ParentBatchID int,
+Title text,
+XCoord int,
+Width int,
+FieldNumber int,
+helpHTML text,
+knownData text
+);
+
+drop table if exists Project;
+
+CREATE TABLE Project
+(
+ID integer not null primary key autoincrement,
+title text,
+recordsPerImage int,
+FirstYCoord int,
+RecordHeight int
+);
+
+drop table if exists Record;
+
+CREATE TABLE Record
+(
+ID integer not null primary key autoincrement,
+RecordNumber int,
+parentBatchID int
+);
+
+drop table if exists User;
+
+CREATE TABLE User
+(
+ID integer not null primary key autoincrement,
+CurrentBatchID int,
+IndexRecords int,
+firstName text,
+lastName text,
+email text,
+username text,
+password text
+);

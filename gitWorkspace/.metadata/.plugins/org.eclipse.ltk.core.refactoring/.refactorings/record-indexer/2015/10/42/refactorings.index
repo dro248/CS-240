@@ -1,0 +1,28 @@
+1444752069175	Rename package 'server.db_access'
+1444752084582	Rename type 'BatchDB'
+1444752090104	Rename type 'FieldDB'
+1444752096428	Rename type 'ProjectDB'
+1444752103940	Rename type 'RecordDB'
+1444752109425	Rename type 'UserDB'
+1444753963729	Move compilation unit
+1444754195783	Rename package 'client.communication'
+1444754203080	Delete element
+1444754415327	Rename package 'server.DAO'
+1444755272134	Delete element
+1444755375946	Delete element
+1444758055215	Rename type 'ValidUserResult'
+1444761668973	Rename type 'ProjectsResult'
+1444762264686	Rename type 'ValidateUserParams'
+1444762429870	Rename type 'ValidateUserResult'
+1444762478189	Rename type 'DownloadBatchParams'
+1444762491916	Rename type 'DownloadBatchResult'
+1444762831379	Delete element
+1444771502270	Delete element
+1444771578637	Delete element
+1444771900089	Delete element
+1444771961126	Rename type 'BatchResult'
+1444772001556	Rename type 'BatchParams'
+1444772035391	Rename type 'DownloadBatchParams'
+1444772050179	Rename type 'DownloaBatchParams'
+1444775679387	Rename type 'BatchParams'
+1444786667394	Delete element

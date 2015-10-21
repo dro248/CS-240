@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="shared.communication.ValidUserResult"/>
+<fullyQualifiedTypeName name="shared.communication.ValidateUserParams"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="shared.model.Batch"/>
+<fullyQualifiedTypeName name="shared.model.User"/>
+<fullyQualifiedTypeName name="shared.communication.ImgResult"/>
+<fullyQualifiedTypeName name="org.omg.stub.java.rmi._Remote_Stub"/>
+<fullyQualifiedTypeName name="shared.communication.UserParams"/>
+<fullyQualifiedTypeName name="shared.model.Cell"/>
+<fullyQualifiedTypeName name="shared.model.Record"/>
+</qualifiedTypeNameHistroy>
