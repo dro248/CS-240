@@ -17,7 +17,8 @@ public class BatchDAO
 	 * @param batch
 	 * @return whether or not the batch was successfully added to database.
 	 */
-	public boolean addBatch(Batch batch) { return false; }
+	public boolean addBatch(Batch batch) throws DatabaseException 
+	{ return false; }
 	
 	// Read
 	/**

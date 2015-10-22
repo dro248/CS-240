@@ -4,19 +4,15 @@ public class Record
 {
 	int ID;
 	int parentBatchID;
-	int rowNumber;
 	
 	
-	public Record(int _ID, int _parentBatchID, int _rowNumber)
+	public Record(int _ID, int _parentBatchID)
 	{
 		ID = _ID;
 		parentBatchID = _parentBatchID;
-		rowNumber = _rowNumber;
 	}
 	
 	
 	public int getID()				{ return ID; 			}
-	public int getParentBatchID()	{ return parentBatchID; }
-	public int getRowNumber()		{ return rowNumber; 	}
-	
+	public int getParentBatchID()	{ return parentBatchID; }	
 }

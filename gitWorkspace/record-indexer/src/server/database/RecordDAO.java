@@ -16,7 +16,10 @@ public class RecordDAO
 	 * @param record
 	 * @return (boolean) Whether or not record was successfully added to database.
 	 */
-	public boolean addRecord(Record record) { return false; }
+	public boolean addRecord(Record record) throws DatabaseException
+	{ 
+		return false; 	
+	}
 	
 	/**
 	 * Get record by recordID

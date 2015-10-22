@@ -4,7 +4,7 @@ package shared.model;
 public class User 
 {
 	// FIELDS
-	int ID;
+//	int ID;
 	String username;	// this is unique
 	String password;
 	String firstname;
@@ -18,6 +18,7 @@ public class User
 	public User(String _username, String _password, String _firstname, 
 			String _lastname, String _email, int _recordsIndexed, int _currentBatchID)
 	{
+//		ID = _id;
 		username = _username;
 		password = _password;
 		firstname = _firstname;

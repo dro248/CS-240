@@ -20,7 +20,8 @@ public class FieldDAO
 	 * @param field
 	 * @return whether or not the field was successfully added to database.
 	 */
-	public boolean addField(Field field) { return false; }
+	public boolean addField(Field field) throws DatabaseException 
+	{ return false; }
 	
 	// Read
 	/**

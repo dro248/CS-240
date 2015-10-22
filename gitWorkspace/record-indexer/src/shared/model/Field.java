@@ -4,12 +4,12 @@ public class Field
 {
 	// FIELDS
 	int ID;
-	int parent_project_id;
 	String title;
 	int xCoordinate;
 	int width;
 	String helpHTML;
 	String knownData;
+	int parentProjectID;
 	
 	
 	// CONSTRUCTOR

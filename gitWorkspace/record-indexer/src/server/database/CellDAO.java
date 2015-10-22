@@ -17,7 +17,8 @@ public class CellDAO
 	 * @param cell
 	 * @return whether or not cell was successfully added.
 	 */
-	public boolean addCell(Cell cell) { return false; }
+	public boolean addCell(Cell cell) throws DatabaseException 
+	{ return false; }
 	
 	/**
 	 * Gets a cell based on Field and Record coordinates.

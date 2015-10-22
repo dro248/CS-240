@@ -5,23 +5,21 @@ import java.util.*;
 public class Batch 
 {	
 	int ID;
+	String file;
 	boolean isAvailable;
-	String filename;
-	List<Record> myRecords;
+	int parentProjectID;
 	
 	
-	public Batch(int _ID, boolean _isAvailable, String _filename, List<Record> _records)
+	public Batch(int _ID, int _parentProjectID, boolean _isAvailable, String _filename)
 	{
 		ID = _ID;
+		parentProjectID = _parentProjectID;
 		isAvailable = _isAvailable;
-		filename = _filename;
-		myRecords = _records;
+		file = _filename;
 	}
 	
 	
 	public int getID()				{ return ID; 			}
+	public String getFilename()		{ return file; 			}
 	public boolean isAvailable()	{ return isAvailable; 	}
-	public String getFilename()		{ return filename; 		}
-	public List<Record> getRecords(){ return myRecords; 	}
-
 }

@@ -1,4 +1,10 @@
 drop table if exists Batch;
+drop table if exists Cell;
+drop table if exists Field;
+drop table if exists Project;
+drop table if exists Record;
+drop table if exists User;
+
 
 CREATE TABLE Batch
 (
@@ -8,7 +14,7 @@ filename text,
 projectID int
 );
 
-drop table if exists Cell;
+
 
 CREATE TABLE Cell
 (
@@ -19,7 +25,7 @@ parentID int,
 CellValue text
 );
 
-drop table if exists Field;
+
 
 CREATE TABLE Field
 (
@@ -33,18 +39,18 @@ helpHTML text,
 knownData text
 );
 
-drop table if exists Project;
+
 
 CREATE TABLE Project
 (
 ID integer not null primary key autoincrement,
-title text,
-recordsPerImage int,
+Title text,
+RecordsPerImage int,
 FirstYCoord int,
 RecordHeight int
 );
 
-drop table if exists Record;
+
 
 CREATE TABLE Record
 (
@@ -53,7 +59,7 @@ RecordNumber int,
 parentBatchID int
 );
 
-drop table if exists User;
+
 
 CREATE TABLE User
 (

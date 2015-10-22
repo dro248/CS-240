@@ -2,20 +2,19 @@ package shared.model;
 
 public class Cell 
 {
-	String value;
 	int parentRecordID;
-	int fieldID;
-	
+	int parentFieldID;
+	String cellValue;
 	
 	public Cell(String _value, int _parentRecordID, int _fieldID)
 	{
-		value = _value;
+		cellValue = _value;
 		parentRecordID = _parentRecordID;
-		fieldID = _fieldID;
+		parentFieldID = _fieldID;
 	}
 	
 	
-	public String getValue() { return value; 			}
+	public String getValue() { return cellValue; 		}
 	public int getParentID() { return parentRecordID; 	}
-	public int getFieldID()	 { return fieldID; 			}
+	public int getFieldID()	 { return parentFieldID; 	}
 }
