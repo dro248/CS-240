@@ -1,0 +1,21 @@
+package shared.model;
+
+public class Cell 
+{
+	String cellValue;
+	int parentRecordID;
+	int fieldID;
+	
+	
+	public Cell(String _value, int _parentRecordID, int _fieldID)
+	{
+		cellValue = _value;
+		parentRecordID = _parentRecordID;
+		fieldID = _fieldID;
+	}
+	
+	
+	public String getValue() { return cellValue; 		}
+	public int getParentID() { return parentRecordID; 	}
+	public int getFieldID()	 { return fieldID; 			}
+}

@@ -1,0 +1,180 @@
+package server.database;
+
+import java.io.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.*;
+
+/*
+ *	This is the import you need to use the Apache Commons IO library.
+ *	Look at the code marked {/*(**APACHE**)*/
+ //*/
+import org.apache.commons.io.*;
+
+import shared.model.*;
+import server.database.*;
+import server.*;
+
+import org.w3c.dom.*;
+
+import javax.xml.parsers.*;
+
+public class DataImporter 
+{
+	Database database = new Database();
+	
+	public static void main(String[] args)
+	{
+		DataImporter dataImporter = new DataImporter();
+		
+		try 
+		{
+			dataImporter.importData(args[0]);
+		} 
+		catch (Exception e) 
+		{
+			System.out.println("Import failed!");
+			e.printStackTrace();
+		}
+	}
+	
+	public void importData(String xmlFilename) throws Exception
+	{
+		// VARIABLES FOR PARSING XML
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		File xmlFile = new File(xmlFilename);
+		File dest = new File("Records");
+		
+		
+		// COPY FILE TO LOCAL
+		// (**APACHE**)
+		try
+		{
+			//	We make sure that the directory we are copying is not the the destination
+			//	directory.  Otherwise, we delete the directories we are about to copy.
+			if(!xmlFile.getParentFile().getCanonicalPath().equals(dest.getCanonicalPath()))
+				FileUtils.deleteDirectory(dest);
+				
+			//	Copy the directories (recursively) from our source to our destination.
+			FileUtils.copyDirectory(xmlFile.getParentFile(), dest);
+			
+			/* Empties Database. Now, my database is completely
+			 *  empty and ready to load with data. 
+			 */
+			refreshDatabase();
+		}
+		catch (IOException e)
+		{
+			System.out.println("ERROR in [DataImporter.importData]:");
+			System.out.println("   -> Unable to deal with the IOException thrown.");
+		}
+		//(**APACHE**)
+		
+		
+		// PARSE XML
+		File parsefile = new File(dest.getPath() + File.separator + xmlFile.getName());
+		Document doc = builder.parse(parsefile);
+		
+		NodeList users = doc.getElementsByTagName("users");
+		parseUsers(users);
+		
+		NodeList projects = doc.getElementsByTagName("projects");
+		parseProjects(projects);
+	}
+
+
+	private void parseUsers(NodeList usersList)
+	{
+		/*
+		 *	This is where you will iterate through all of the users in the
+		 *	usersList NodeList and extract the information to create and insert
+		 *	a user into your database.
+		 */
+		
+		// SEE DOMExample.java
+
+		for (int i = 0; i < usersList.getLength(); ++i) 
+		{
+			User myUser;
+			
+			Element user = (Element)usersList.item(i);
+
+			Element elem_username = (Element)user.getElementsByTagName("username").item(0);
+			Element elem_password = (Element)user.getElementsByTagName("password").item(0);
+			Element elem_firstname = (Element)user.getElementsByTagName("firstname").item(0);
+			Element elem_lastname = (Element)user.getElementsByTagName("lastname").item(0);
+			Element elem_email = (Element)user.getElementsByTagName("email").item(0);
+			Element elem_indexedRecords = (Element)user.getElementsByTagName("indexedrecords").item(0);
+			
+			String firstname = elem_firstname.getTextContent();
+			String lastname = elem_lastname.getTextContent();
+			String username = elem_username.getTextContent();
+			String password = elem_password.getTextContent();
+			String email = elem_email.getTextContent();
+			int indexedRecords = Integer.parseInt(elem_indexedRecords.getTextContent());
+			
+			// Create User from values
+			myUser = new User(username, password, firstname, lastname, email, indexedRecords, -1);
+			
+			UserDAO userDAO = new UserDAO(database);
+			try
+			{
+				userDAO.addUser(myUser);
+			}
+			catch(DatabaseException e)
+			{
+				System.out.println("UserDAO Database Exception");
+				e.printStackTrace();
+			}
+		}	
+		
+		
+	}
+
+
+	private void parseProjects(NodeList projectsList)
+	{
+		/*
+		 *	This is where you will iterate through all of the users in the
+		 *	projectsList NodeList and extract the information to create and
+		 *	insert a project into your database.
+		 */
+		
+		for(int i = 0; i < projectsList.getLength(); i++)
+		{
+			Project myProject;
+			Element projectElem = (Element) projectsList.item(i);
+			
+			Element elem_title = (Element) projectElem.getElementsByTagName("title");
+			Element elem_recordsPerImage = (Element) projectElem.getElementsByTagName("recordsperimage");
+			Element elem_firstYCoord = (Element) projectElem.getElementsByTagName("firstycoord");
+			Element elem_recordHeight = (Element) projectElem.getElementsByTagName("recordheight");
+			
+			String title = elem_title.getTextContent();
+			int recordsPerImage = Integer.parseInt(elem_recordsPerImage.getTextContent());
+			int firstYCoord = Integer.parseInt(elem_recordHeight.getTextContent());
+			
+			
+			myProject = new Project();
+			
+			
+		}
+	}
+	
+	
+	private void refreshDatabase() throws SQLException
+	{
+		PreparedStatement stmt = null;
+		
+		String dropStmt = "DROP TABLE IF EXISTS Batch;"
+						+ "DROP TABLE IF EXISTS Cell;"
+						+ "DROP TABLE IF EXISTS Field;"
+						+ "DROP TABLE IF EXISTS Project;"
+						+ "DROP TABLE IF EXISTS Record;"
+						+ "DROP TABLE IF EXISTS User;";
+		
+		stmt = database.getConnection().prepareStatement(dropStmt);
+		stmt.executeUpdate();
+	}
+}

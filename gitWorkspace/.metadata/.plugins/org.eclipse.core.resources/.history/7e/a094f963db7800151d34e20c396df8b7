@@ -1,0 +1,26 @@
+package shared.model;
+
+import java.util.*;
+
+public class Batch 
+{	
+	int ID;
+	String file;
+	int parentProjectID;
+	boolean isAvailable;
+	
+	
+	
+	public Batch(int _ID, int _parentProjectID, boolean _isAvailable, String _filename)
+	{
+		ID = _ID;
+		parentProjectID = _parentProjectID;
+		isAvailable = _isAvailable;
+		file = _filename;
+	}
+	
+	
+	public int getID()				{ return ID; 			}
+	public boolean isAvailable()	{ return isAvailable; 	}
+	public String getFilename()		{ return file; 			}
+}

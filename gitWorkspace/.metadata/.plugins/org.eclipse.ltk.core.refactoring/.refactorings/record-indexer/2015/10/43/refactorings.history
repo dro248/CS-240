@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;j&apos; in &apos;server.database.DataImporter.parseBatches(...)&apos; to &apos;i&apos;&#x0D;&#x0A;- Original project: &apos;record-indexer&apos;&#x0D;&#x0A;- Original element: &apos;server.database.DataImporter.parseBatches(NodeList).j&apos;&#x0D;&#x0A;- Renamed element: &apos;j&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;j&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;server.database{DataImporter.java[DataImporter~parseBatches~QNodeList;@j!5957!5965!5961!5961!I!0!false" name="i" references="true" stamp="1445459461181" version="1.0"/>
+</session>
