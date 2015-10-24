@@ -12,20 +12,13 @@ public class UserDAO
 		database = db;
 	}
 	
+
 	/**
 	 * Adds a user to the database.
 	 * @param newUser
 	 */
 	public void add(User newUser) throws DatabaseException
-	{
-		// TEST that Username DOES NOT EXIST. Duplicate usernames not allowed!
-		User tmpUser = get(newUser.getUsername(), newUser.getPassword());
-		if(tmpUser.getUsername().equals(newUser.getUsername()))
-		{
-			System.out.println("error USERNAME_EXISTS: Username \"" + newUser.getUsername() + "\" already taken. Choose different username.");
-			return;
-		}
-		
+	{ 
 		PreparedStatement stmt = null;
 		ResultSet keyRS = null;		
 		try 
@@ -40,6 +33,23 @@ public class UserDAO
 			stmt.setString(5, newUser.getEmail());
 			stmt.setInt(5, newUser.getRecordsIndexed());
 			stmt.setInt(5, newUser.getCurrentBatchID());
+			
+			
+			// Below is for getting an auto-generated UserID back from the database... (not needed for this DAO) 
+			/*
+			if (stmt.executeUpdate() == 1) 
+			{			
+				Statement keyStmt = database.getConnection().createStatement();
+				keyRS = keyStmt.executeQuery("select last_insert_rowid()");
+				keyRS.next();
+				int id = keyRS.getInt(1);
+				newUser.setID(id);
+			}
+			else 
+			{
+				throw new DatabaseException("Could not ADD new User to database...");
+			}*/
+			
 		}
 		catch (SQLException e) 
 		{
@@ -53,10 +63,10 @@ public class UserDAO
 	}
 	
 	/**
-	 * Gets a User from the database based on username & password.
+	 * Check if username and password are contained in the database
 	 * @param username
 	 * @param password
-	 * @return Returns User with specified username & password.
+	 * @return Returns user with specified username & password is returned.
 	 */
 	public User get(String _username, String _password) throws DatabaseException
 	{
@@ -72,6 +82,7 @@ public class UserDAO
 
 			rs = stmt.executeQuery();
 			
+//			int id 				= rs.getInt(1);	 NOT NEEDED!
 			String username 	= rs.getString(2);
 			String password 	= rs.getString(3);
 			String firstname 	= rs.getString(4);

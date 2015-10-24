@@ -12,6 +12,7 @@ public class UserDAO
 		database = db;
 	}
 	
+
 	/**
 	 * Adds a user to the database.
 	 * @param newUser
@@ -72,6 +73,7 @@ public class UserDAO
 
 			rs = stmt.executeQuery();
 			
+//			int id 				= rs.getInt(1);	 NOT NEEDED!
 			String username 	= rs.getString(2);
 			String password 	= rs.getString(3);
 			String firstname 	= rs.getString(4);

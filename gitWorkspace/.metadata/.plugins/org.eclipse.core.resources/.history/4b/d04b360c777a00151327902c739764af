@@ -12,6 +12,7 @@ public class UserDAO
 		database = db;
 	}
 	
+
 	/**
 	 * Adds a user to the database.
 	 * @param newUser
@@ -22,7 +23,7 @@ public class UserDAO
 		User tmpUser = get(newUser.getUsername(), newUser.getPassword());
 		if(tmpUser.getUsername().equals(newUser.getUsername()))
 		{
-			System.out.println("error USERNAME_EXISTS: Username \"" + newUser.getUsername() + "\" already taken. Choose different username.");
+			System.out.println("ERROR: Username already taken. Cannot add user. Choose different username.");
 			return;
 		}
 		
@@ -40,6 +41,23 @@ public class UserDAO
 			stmt.setString(5, newUser.getEmail());
 			stmt.setInt(5, newUser.getRecordsIndexed());
 			stmt.setInt(5, newUser.getCurrentBatchID());
+			
+			
+			// Below is for getting an auto-generated UserID back from the database... (not needed for this DAO) 
+			/*
+			if (stmt.executeUpdate() == 1) 
+			{			
+				Statement keyStmt = database.getConnection().createStatement();
+				keyRS = keyStmt.executeQuery("select last_insert_rowid()");
+				keyRS.next();
+				int id = keyRS.getInt(1);
+				newUser.setID(id);
+			}
+			else 
+			{
+				throw new DatabaseException("Could not ADD new User to database...");
+			}*/
+			
 		}
 		catch (SQLException e) 
 		{
@@ -72,6 +90,7 @@ public class UserDAO
 
 			rs = stmt.executeQuery();
 			
+//			int id 				= rs.getInt(1);	 NOT NEEDED!
 			String username 	= rs.getString(2);
 			String password 	= rs.getString(3);
 			String firstname 	= rs.getString(4);
