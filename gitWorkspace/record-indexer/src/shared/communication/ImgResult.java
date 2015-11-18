@@ -1,21 +1,21 @@
 package shared.communication;
 
-public class ImgResult extends UserParams
+public class ImgResult
 {
-	int projectID;
-	boolean fail;
+	private String url;
 	
-	
-	public ImgResult(String _username, String _password, int _projectID, boolean _fail)
+	public ImgResult(String _url)
 	{
-		super(_username, _password);
-		projectID = _projectID;
-		fail = _fail;
+		url = _url;
 	}
-	
-	
-	public String getUsername() { return username; 	}
-	public String getPassword()	{ return password; 	}
-	public int getProjectID()	{ return projectID;	}
-	public boolean fail()		{ return fail;		}
+	public String getUrl()		{ return url;	}
+	public String toString(String url_prefix)
+	{		
+		if(url == null)
+		{
+			return "FAILED\n";
+		}
+		
+		return url_prefix + "/Records/" + url + '\n';
+	}
 }

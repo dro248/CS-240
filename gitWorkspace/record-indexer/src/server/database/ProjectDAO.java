@@ -15,18 +15,17 @@ public class ProjectDAO
 		database = db;
 	}
 	
-	/**
-	 * Adds a project to the database.
-	 * @param project
-	 * @return (boolean) whether or not the project is successfully added to the database.
-	 */
-	public void addProject(Project project) throws DatabaseException
+	// DONE
+	public void add(Project project) throws DatabaseException
 	{ 
 		PreparedStatement stmt = null;
 		ResultSet keyRS = null;
 		try
-		{     
-			String sql = "INSERT INTO Project (title, recordsPerImage, firstYCoord, recordHeight) values (?,?,?,?)";
+		{
+			database.startTransaction();
+			//System.out.println("START_TRANSACTION: projectDAO add()");
+			
+			String sql = "INSERT INTO Project (title, recordsperimage, firstycoord, recordheight) values (?,?,?,?)";
 			
 			stmt = database.getConnection().prepareStatement(sql);
 			stmt.setString(1, project.getTitle());     
@@ -44,31 +43,154 @@ public class ProjectDAO
 			}
 			else 
 			{
-				throw new DatabaseException("Could not insert contact");
+				database.endTransaction(false);
+				//System.out.println("END_TRANSACTION: projectDAO add()");
+				throw new DatabaseException("ERROR: Could not insert project.");
 			}
 		}
 		catch (SQLException e) 
 		{
-			throw new DatabaseException("Could not insert contact", e);
+			database.endTransaction(false);
+			//System.out.println("END_TRANSACTION: projectDAO add()");
+			throw new DatabaseException("ERROR: Could not insert project.", e);
 		}
 		finally 
 		{
+			database.endTransaction(true);
+			//System.out.println("END_TRANSACTION: projectDAO add()");
 			Database.safeClose(stmt);
 			Database.safeClose(keyRS);
 		}
 	}
 	
-	/**
-	 * Gets a list of all projects.
-	 * @return List of projects
-	 */
-	public List<Project> getAllProjects()	{ return null; }
-	
-	/**
-	 * Get project by projectID
-	 * @param project_id
-	 * @return Project
-	 */
-	public Project getProject(int project_id) { return null; }
+	// DONE
+	public Project get(int projectID) throws DatabaseException
+	{ 
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Project project = null;
+		try 
+		{
+			database.startTransaction();
+			
+			String query = "SELECT * FROM Project WHERE ID = ?";
+			stmt = database.getConnection().prepareStatement(query);
+			stmt.setInt(1, projectID);
 
+			rs = stmt.executeQuery();
+			
+			if(rs.next())
+			{
+//				Project	(ID integer not null primary key autoincrement, title text, recordsperimage int, firstycoord int, recordheight int);
+				
+				int ID 				= rs.getInt(1);
+				String title	 	= rs.getString(2);
+				int recordsPerImage	= rs.getInt(3);
+				int firstYCoord 	= rs.getInt(4);
+				int recordHeight	= rs.getInt(5);
+
+				project = new Project(ID, title, recordsPerImage, firstYCoord, recordHeight);
+			}
+		}
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			//System.out.println("[server.database.UserDAO]: get() not working...");
+			DatabaseException serverEx = new DatabaseException(e.getMessage(), e);
+			throw serverEx;
+		}		
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return project;	
+		
+		
+	}
+	
+	// DONE
+	public List<Project> getAll(int projectID) throws DatabaseException
+	{ 
+		List<Project> result = new ArrayList<Project>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+			String query = "SELECT * FROM Project WHERE ID = ?";
+			stmt = database.getConnection().prepareStatement(query);
+			stmt.setInt(1, projectID);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) 
+			{
+				int ID 				= rs.getInt(1);
+				String title	 	= rs.getString(2);
+				int recordsPerImage	= rs.getInt(3);
+				int firstYCoord 	= rs.getInt(4);
+				int recordHeight	= rs.getInt(5);
+
+				result.add(new Project(ID, title, recordsPerImage, firstYCoord, recordHeight));
+			}
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			throw new DatabaseException(e.getMessage(), e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return result; 
+	}
+
+	// DONE
+	public List<Project> getAll() throws DatabaseException
+	{ 
+		List<Project> result = new ArrayList<Project>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+			String query = "SELECT * FROM Project";
+			stmt = database.getConnection().prepareStatement(query);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) 
+			{
+				int ID 				= rs.getInt(1);
+				String title	 	= rs.getString(2);
+				int recordsPerImage	= rs.getInt(3);
+				int firstYCoord 	= rs.getInt(4);
+				int recordHeight	= rs.getInt(5);
+
+				result.add(new Project(ID, title, recordsPerImage, firstYCoord, recordHeight));
+			}
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			throw new DatabaseException(e.getMessage(), e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return result;
+	}
 }

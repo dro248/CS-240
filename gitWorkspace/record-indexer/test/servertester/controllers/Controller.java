@@ -2,41 +2,46 @@ package servertester.controllers;
 
 import java.util.*;
 
+import client.communication.*;
 import servertester.views.*;
+import shared.communication.*;
 
-public class Controller implements IController {
-
+public class Controller implements IController 
+{
 	private IView _view;
 	
-	public Controller() {
+	public Controller() 
+	{
 		return;
 	}
 	
-	public IView getView() {
+	public IView getView() 
+	{
 		return _view;
 	}
 	
-	public void setView(IView value) {
+	public void setView(IView value) 
+	{
 		_view = value;
 	}
 	
-	// IController methods
-	//
-	
 	@Override
-	public void initialize() {
+	public void initialize() 
+	{
 		getView().setHost("localhost");
-		getView().setPort("39640");
+		getView().setPort("45321");
 		operationSelected();
 	}
 
 	@Override
-	public void operationSelected() {
+	public void operationSelected() 
+	{
 		ArrayList<String> paramNames = new ArrayList<String>();
 		paramNames.add("User");
 		paramNames.add("Password");
 		
-		switch (getView().getOperation()) {
+		switch (getView().getOperation()) 
+		{
 		case VALIDATE_USER:
 			break;
 		case GET_PROJECTS:
@@ -69,8 +74,10 @@ public class Controller implements IController {
 	}
 
 	@Override
-	public void executeOperation() {
-		switch (getView().getOperation()) {
+	public void executeOperation() 
+	{
+		switch (getView().getOperation()) 
+		{
 		case VALIDATE_USER:
 			validateUser();
 			break;
@@ -97,27 +104,141 @@ public class Controller implements IController {
 			break;
 		}
 	}
-	
-	private void validateUser() {
-	}
-	
-	private void getProjects() {
-	}
-	
-	private void getSampleImage() {
-	}
-	
-	private void downloadBatch() {
-	}
-	
-	private void getFields() {
-	}
-	
-	private void submitBatch() {
-	}
-	
-	private void search() {
+
+	private void validateUser() 
+	{
+		// CREATE A ClientCommunicator object
+		// in IView... there are getters and setters for the GUI
+		ClientCommunicator cc 	= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values			= getView().getParameterValues();
+		UserParams params		= new UserParams(values[0], values[1]);
+		
+		try
+		{
+			UserResult results	= cc.validateUser(params);
+			getView().setResponse(results.toString());
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
 	}
 
+	private void getProjects() 
+	{
+		ClientCommunicator cc 	= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values			= getView().getParameterValues();
+		ProjectParams params	= new ProjectParams(values[0], values[1]);
+		
+		try
+		{
+			ProjectResult results = cc.getProjects(params);
+			getView().setResponse(results.toString());
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
+	}
+
+	private void getSampleImage() 
+	{
+		ClientCommunicator cc 	= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values			= getView().getParameterValues();
+		ImgParams params		= new ImgParams(values[0], values[1], Integer.parseInt(values[2]));
+		
+		try
+		{
+			ImgResult results	= cc.getSampleImage(params);
+			getView().setResponse(results.toString(cc.getURLPrefix()));
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
+	}
+	
+	private void downloadBatch() 
+	{
+		ClientCommunicator cc 		= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values				= getView().getParameterValues();
+		DownloadBatchParams params	= new DownloadBatchParams(values[0], values[1], Integer.parseInt(values[2]));
+		
+		try
+		{
+			DownloadBatchResult results	= cc.downloadBatch(params);
+			getView().setResponse(results.toString(cc.getURLPrefix()));
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
+	}
+	
+	private void getFields() 
+	{
+		ClientCommunicator cc 	= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values			= getView().getParameterValues();
+		FieldParams params 		= null;
+		int projectID			= -1;
+		
+		if(!values[2].equals(""))
+		{
+			if(Integer.parseInt(values[2]) == -1)
+			{
+				values[2] = "0";
+			}
+			else
+			{
+				projectID = Integer.parseInt(values[2]);
+			}
+		}
+		
+		params = new FieldParams(values[0], values[1], projectID);
+		
+		try
+		{
+			FieldResult results	= cc.getFields(params);
+			getView().setResponse(results.toString());
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
+	}
+
+	private void submitBatch() 
+	{
+		ClientCommunicator cc 		= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values				= getView().getParameterValues();
+		SubmitBatchParams params 	= new SubmitBatchParams(values[0], values[1], Integer.parseInt(values[2]), values[3]);
+		
+		try
+		{
+			SubmitBatchResult results = cc.submitBatch(params);
+			getView().setResponse(results.toString());
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
+	}
+
+	private void search() 
+	{
+		ClientCommunicator cc	= new ClientCommunicator(getView().getHost(), Integer.parseInt(getView().getPort()));
+		String[] values			= getView().getParameterValues();
+		SearchParams params	= new SearchParams(values[0], values[1], values[2], values[3]);
+		
+		try
+		{
+			SearchResult results	= cc.search(params);
+			getView().setResponse(results.toString(cc.getURLPrefix()));
+		}
+		catch(Exception e)
+		{
+			getView().setResponse("FAILED\n");
+		}
+	}
 }
 

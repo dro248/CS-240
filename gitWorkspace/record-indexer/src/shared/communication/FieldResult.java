@@ -5,15 +5,34 @@ import shared.model.*;
 
 public class FieldResult 
 {
-	List<Field> fields;
-	boolean fail;
+	private List<Field> fieldsList;
 	
-	public FieldResult(List<Field> _fields, boolean _fail)
+	public FieldResult(List<Field> _fields)
 	{
-		fields = _fields;
-		fail = _fail;
+		fieldsList 	= _fields;
 	}
 	
-	public List<Field> getFields()	{ return fields;	}
-	public boolean fail() 			{ return fail;		}
+	public List<Field> getFields()	{ return fieldsList;}
+	public String toString()
+	{
+		StringBuilder output = new StringBuilder();
+		
+		if(fieldsList == null)
+		{
+			output.append("FAILED\n");
+			return output.toString();
+		}
+		
+		if(fieldsList.size() > 0)
+		{
+			for(int i = 0; i < fieldsList.size(); i++)
+			{
+				output.append(fieldsList.get(i).getParentProjectID() 	+ "\n");
+				output.append(fieldsList.get(i).getID()					+ "\n");
+				output.append(fieldsList.get(i).getTitle()				+ "\n");
+			}
+		}
+		
+		return output.toString();
+	}
 }

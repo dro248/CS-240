@@ -1,5 +1,8 @@
 package server.database;
 
+import java.sql.*;
+import java.util.*;
+
 import shared.model.*;
 
 public class RecordDAO 
@@ -11,20 +14,167 @@ public class RecordDAO
 		database = db;
 	}
 
-	/**
-	 * Adds a record to the database.
-	 * @param record
-	 * @return (boolean) Whether or not record was successfully added to database.
-	 */
-	public boolean addRecord(Record record) throws DatabaseException
-	{ 
-		return false; 	
+	// DONE
+	public void add(Record record) throws DatabaseException
+	{
+		if(record.getParentBatchID() < 0)
+		{
+			// record not valid
+			throw new DatabaseException();
+		}
+		
+		PreparedStatement stmt = null;
+		ResultSet keyRS = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+//			Record	( ID integer not null primary key autoincrement, parentBatchID int);	
+			String query = "INSERT INTO Record (parentBatchID) values (?)";
+			stmt = database.getConnection().prepareStatement(query);
+			stmt.setInt		(1, record.getParentBatchID());
+
+			if (stmt.executeUpdate() == 1) 
+			{
+				Statement keyStmt = database.getConnection().createStatement();
+				keyRS = keyStmt.executeQuery("SELECT last_insert_rowid()");
+				keyRS.next();
+				record.setID(keyRS.getInt(1));
+			} 
+			else 
+			{ 
+				database.endTransaction(false); 
+				throw new DatabaseException("ERROR: Record not added!"); 
+			}
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			throw new DatabaseException("ERROR: Could not add record to database!", e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(stmt);
+			Database.safeClose(keyRS);
+		}	
 	}
 	
-	/**
-	 * Get record by recordID
-	 * @param recordID
-	 * @return Record
-	 */
-	public Record getRecord(int recordID) { return null; }
+	// DONE
+	public Record get(int recordID) throws DatabaseException
+	{ 
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Record record = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+			String query = "SELECT * FROM Record WHERE ID = ?";
+			
+			stmt = database.getConnection().prepareStatement(query);
+			stmt.setInt(1, recordID);
+			rs = stmt.executeQuery();
+			
+			stmt.setInt	(1, recordID);
+			
+			if (rs.next()){
+				int parentBatchID = 	rs.getInt(2);
+			
+				record = new Record(recordID, parentBatchID);
+			}
+			
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			throw new DatabaseException(e.getMessage(), e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return record; 
+	}
+	
+	// DONE
+	public List<Record> getAll() throws DatabaseException
+	{
+		List<Record> result = new ArrayList<Record>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+			String query = "SELECT * FROM Record";
+			stmt = database.getConnection().prepareStatement(query);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) 
+			{
+				int ID 				=  rs.getInt(1);
+				int parentBatchID	=  rs.getInt(2);
+
+				result.add(new Record(ID, parentBatchID));
+			}
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			throw new DatabaseException(e.getMessage(), e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return result;
+	}	
+
+	// DONE
+	public List<Record> getAll(int _batchID) throws DatabaseException
+	{
+		List<Record> result = new ArrayList<Record>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+			String query = "SELECT * FROM Record WHERE parentBatchID = ?";
+			stmt = database.getConnection().prepareStatement(query);
+			stmt.setInt(1, _batchID);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) 
+			{
+				int ID 				=  rs.getInt(1);
+				
+				result.add(new Record(ID, _batchID));
+			}
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			throw new DatabaseException(e.getMessage(), e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return result;
+	}
 }

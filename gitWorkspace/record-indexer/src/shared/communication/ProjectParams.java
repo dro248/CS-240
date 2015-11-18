@@ -6,5 +6,4 @@ public class ProjectParams extends UserParams
 	{
 		super(_username, _password);
 	}
-
 }

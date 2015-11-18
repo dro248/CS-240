@@ -1,19 +1,27 @@
 package shared.communication;
 
 import java.util.*;
+
 import shared.model.*;
 
 public class ProjectResult
 {
-	List<Project> projects;
-	boolean fail;
+	private List<Project> projects;
 	
-	public ProjectResult(List<Project> _projects, boolean _fail)
+	public ProjectResult(List<Project> _projects)
 	{
 		projects = _projects;
-		fail = _fail;
 	}
 	
 	public List<Project> getProjects() 	{ return projects; 	}
-	public boolean fail()				{ return fail; 		}
+	public String toString()
+	{		
+		StringBuilder output = new StringBuilder();
+		for(Project p : projects)
+		{
+			output.append( p.getID() 	+ "\n"
+						 + p.getTitle()	+ "\n");
+		}
+		return output.toString();
+	}
 }

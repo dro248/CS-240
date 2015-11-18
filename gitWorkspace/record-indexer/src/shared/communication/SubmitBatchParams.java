@@ -2,8 +2,8 @@ package shared.communication;
 
 public class SubmitBatchParams extends UserParams
 {
-	int batchID;
-	String fieldValues;
+	private int batchID;
+	private String fieldValues;
 	
 	public SubmitBatchParams(String _username, String _password, int _batchID, String _fieldValues)
 	{

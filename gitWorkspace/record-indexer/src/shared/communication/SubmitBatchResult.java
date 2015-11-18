@@ -2,13 +2,21 @@ package shared.communication;
 
 public class SubmitBatchResult
 {
-
-	boolean fail;
+	private boolean state;
 	
-	public SubmitBatchResult(boolean _fail)
+	public SubmitBatchResult(boolean status)
 	{
-		fail = _fail;
+		state = status;
 	}
 	
-	public boolean fail() { return fail; }
+	public boolean getState() { return state; }
+	public String toString()
+	{		
+		if(!state)
+		{
+			return "FAILED\n";
+		}
+		
+		return "TRUE\n";
+	}
 }

@@ -5,12 +5,15 @@ import java.awt.*;
 import servertester.controllers.*;
 import servertester.views.*;
 
-public class GuiTester {
-
-	public static void main(String[] args) {
+public class GuiTester 
+{
+	public static void main(String[] args) 
+	{
 		EventQueue.invokeLater(
-				new Runnable() {
-					public void run() {
+				new Runnable() 
+				{
+					public void run() 
+					{
 						IndexerServerTesterFrame frame = new IndexerServerTesterFrame();			
 						Controller controller = new Controller();
 						frame.setController(controller);			
@@ -20,8 +23,6 @@ public class GuiTester {
 					}
 				}
 		);
-
 	}
-
 }
 

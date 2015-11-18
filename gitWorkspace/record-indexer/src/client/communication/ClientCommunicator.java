@@ -1,65 +1,110 @@
 package client.communication;
 
+import java.io.*;
+import java.net.*;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import shared.communication.*;
+import client.*;
 
-public class ClientCommunicator {
+public class ClientCommunicator 
+{
+	private static ClientCommunicator singleton = null;
+	public static ClientCommunicator getSingleton()
+	{
+		if (singleton == null)
+		{
+			singleton = new ClientCommunicator("localhost", 45321);
+		}
+		
+		return singleton;
+	}
+	
+	
+	private static String SERVER_HOST = "localhost";
+	private static int SERVER_PORT = 8080;
+	private static String URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;
+	private static final String HTTP_POST = "POST";
+	
+	private XStream xmlStream;
+	
+	public ClientCommunicator(String host, int port)
+	{
+		SERVER_HOST = host;
+		SERVER_PORT = port;
+		URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;
+		xmlStream = new XStream(new DomDriver());
+	}
+	
 
-	/**
-	 * Returns the UserResult object based on the parameters in UserParams.
-	 * @param UserParams (username, password)
-	 * @return UserResult
-	 */
-	public UserResult validateUser(UserParams params) 					{ return null; }
+	public UserResult validateUser(UserParams params) throws ClientException 
+	{
+		return (UserResult)doPost("/ValidateUser", params);
+	}
 	
-	/**
-	 * Returns the ProjectResult based on the parameters in ProjectParams.
-	 * @param ProjectParams (username, password, projectID)
-	 * @return ProjectResult
-	 */
-	public ProjectResult getProjects(ProjectParams params) 				{ return null; }
+	public ProjectResult getProjects(ProjectParams params) throws ClientException 
+	{
+		return (ProjectResult)doPost("/GetProjects", params);
+	}
 	
-	/**
-	 * Returns ImgResult based on the parameters in ImgParams.
-	 * @param ImgParams (username, password, projectID)
-	 * @return ImgResult
-	 */
-	public ImgResult getSampleImage(ImgParams params) 					{ return null; }
+	public ImgResult getSampleImage(ImgParams params) throws ClientException 
+	{
+		return (ImgResult)doPost("/GetSampleImage", params);
+	}
 	
-	/**
-	 * Returns DownloadBatchResult based on the parameters in DownloadBatchParams.
-	 * @param DownloadBatchParams (username, password, projectID)
-	 * @return DownloadBatchResult
-	 */
-	public DownloadBatchResult downloadBatch(DownloadBatchParams params){ return null; }
+	public DownloadBatchResult downloadBatch(DownloadBatchParams params) throws ClientException 
+	{
+		return (DownloadBatchResult)doPost("/DownloadBatch", params);
+	}
 	
-	/**
-	 * Returns SubmitBatchResult based on the parameters in SubmitBatchParams.
-	 * @param SubmitBatchParams  (username, password, projectID, batchID, field)
-	 * @return SubmitBatchResult
-	 */
-	public SubmitBatchResult submitBatch(SubmitBatchParams params)		{ return null; }
+	public SubmitBatchResult submitBatch(SubmitBatchParams params) throws ClientException 
+	{
+		return (SubmitBatchResult)doPost("/SubmitBatch", params);
+	}
 	
-	/**
-	 * Returns FieldResult based on the parameters in FieldParams.
-	 * @param FieldParams  (username, password, projectID)
-	 * @return FieldResult
-	 */
-	public FieldResult getFields(FieldParams params) 					{ return null; }
+	public FieldResult getFields(FieldParams params) throws ClientException 
+	{
+		return (FieldResult)doPost("/GetFields", params);
+	}
 	
-	/**
-	 * Returns SearchResult based on the searchValues in SearchParams.
-	 * @param SearchParams  (username, password, projectID, fields, searchValues)
-	 * @return SearchResult
-	 */
-	public SearchResult search(SearchParams params) 					{ return null; }
+	public SearchResult search(SearchParams params) throws ClientException 
+	{
+		return (SearchResult)doPost("/Search", params);
+	}
+		
+	private Object doPost(String urlPath, Object postData) throws ClientException 
+	{
+		try 
+		{
+			URL url = new URL(URL_PREFIX + urlPath);
+			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			connection.setRequestMethod(HTTP_POST);
+			connection.setDoOutput(true);
+			connection.connect();
+			xmlStream.toXML(postData, connection.getOutputStream());
+			connection.getOutputStream().close();
+			
+			// Get part
+			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) 
+			{
+				Object result = xmlStream.fromXML(connection.getInputStream());
+				return result;
+			}
+			else 
+			{
+//				System.out.println("ResponseCode NOT 200. Server Sent something else.");
+				throw new ClientException(String.format("doPost failed: %s (http code %d)",
+											urlPath, connection.getResponseCode()));
+			}
+		}
+		catch (IOException e) 
+		{
+//			System.out.println("doPost COMPLETELY failed.");
+			throw new ClientException(String.format("doPost failed: %s", e.getMessage()), e);
+		}
+	}
 	
-	
-	// Based on Rodham's ContactManager example
-	/**
-	 * Returns an object taken from ClientCommunicator file
-	 * @return Object
-	 */
-	//private Object doGet( /*WHAT GOES HERE?*/ )	{ return null; }
-	
-	//private void doPost() {}
+	public String getURLPrefix()	{ return URL_PREFIX; }
 }

@@ -1,7 +1,10 @@
 package server.database;
 
 import shared.model.User;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO 
 {
@@ -12,59 +15,66 @@ public class UserDAO
 		database = db;
 	}
 	
-	/**
-	 * Adds a user to the database.
-	 * @param newUser
-	 */
-	public void add(User newUser) throws DatabaseException
-	{
-		// TEST that Username DOES NOT EXIST. Duplicate usernames not allowed!
-		User tmpUser = get(newUser.getUsername(), newUser.getPassword());
-		if(tmpUser.getUsername().equals(newUser.getUsername()))
-		{
-			System.out.println("error USERNAME_EXISTS: Username \"" + newUser.getUsername() + "\" already taken. Choose different username.");
-			return;
+	// DONE
+	public void add(User user) throws DatabaseException
+	{	
+		if (user.getUsername()	  	== null 		||
+			user.getPassword()		== null 		||
+			user.getFirstname()		== null 		||
+			user.getLastname()		== null 		||
+			user.getEmail()	  		== null 		||
+			user.getRecordsIndexed() < 0 			||
+			user.getCurrentBatchID() < 0) 
+		{ 
+			throw new DatabaseException("ERROR: Invalid input!");
 		}
 		
-		PreparedStatement stmt = null;
-		ResultSet keyRS = null;		
+		PreparedStatement stmt = null;	
 		try 
 		{
-			String query = "INSERT INTO User (username, password, firstname, lastname, email, indexedRecords, currentBatchID)"
-							+ " values (?, ?, ?, ?, ?, ?, ?)";
+			database.startTransaction();
+			//System.out.println("START_TRANSACTION: userDAO add()");
+			
+//			User ( ID integer not null primary key autoincrement, username text, password text, firstname text, lastname text, email text, indexedRecords int, currentBatchID int );
+			String query = "INSERT INTO User (username, password, firstname, lastname, email, indexedRecords, currentBatchID) "
+						 + "values (?, ?, ?, ?, ?, ?, ?)";
 			stmt = database.getConnection().prepareStatement(query);
-			stmt.setString(1, newUser.getUsername());
-			stmt.setString(2, newUser.getPassword());
-			stmt.setString(3, newUser.getFirstname());
-			stmt.setString(4, newUser.getLastname());
-			stmt.setString(5, newUser.getEmail());
-			stmt.setInt(5, newUser.getRecordsIndexed());
-			stmt.setInt(5, newUser.getCurrentBatchID());
+			stmt.setString	(1, user.getUsername());
+			stmt.setString	(2, user.getPassword());
+			stmt.setString	(3, user.getFirstname());
+			stmt.setString	(4, user.getLastname());
+			stmt.setString	(5, user.getEmail());
+			stmt.setInt		(6, user.getRecordsIndexed());
+			stmt.setInt		(7, user.getCurrentBatchID());
+			
+			stmt.executeUpdate();
 		}
 		catch (SQLException e) 
 		{
-			throw new DatabaseException("Could not ADD new User to Database", e);
+			database.endTransaction(false);
+			//System.out.println("END_TRANSACTION: userDAO add()");
+			throw new DatabaseException("Could not add new user!");
 		}
 		finally 
 		{
+			database.endTransaction(true);
+			//System.out.println("END_TRANSACTION: userDAO add()");
 			Database.safeClose(stmt);
-			Database.safeClose(keyRS);
 		}
 	}
 	
-	/**
-	 * Gets a User from the database based on username & password.
-	 * @param username
-	 * @param password
-	 * @return Returns User with specified username & password.
-	 */
+	// DONE
 	public User get(String _username, String _password) throws DatabaseException
-	{
+	{	
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		User myUser;
+		User myUser = null;
+		
 		try 
 		{
+			database.startTransaction();
+			
+//			User (ID integer not null primary key autoincrement, username text, password text, firstname text, lastname text, email text, indexedRecords int, currentBatchID int );
 			String query = "SELECT * FROM User WHERE username = ? AND password = ?";
 			stmt = database.getConnection().prepareStatement(query);
 			stmt.setString(1, _username);
@@ -72,64 +82,120 @@ public class UserDAO
 
 			rs = stmt.executeQuery();
 			
-			String username 	= rs.getString(2);
-			String password 	= rs.getString(3);
-			String firstname 	= rs.getString(4);
-			String lastname 	= rs.getString(5);
-			String email 		= rs.getString(6);
-			int indexedRecords 	= rs.getInt(7);
-			int currentBatchID	= rs.getInt(8);
+			if(rs.next())
+			{
+//				String username 	= rs.getString(2);
+//				String password 	= rs.getString(3);
+				String firstname 	= rs.getString(4);
+				String lastname 	= rs.getString(5);
+				String email 		= rs.getString(6);
+				int indexedRecords 	= rs.getInt(7);
+				int currentBatchID	= rs.getInt(8);
 
-			myUser = new User(username, password, firstname, lastname, email, indexedRecords, currentBatchID);
+				myUser = new User(_username, _password, firstname, lastname, email, indexedRecords, currentBatchID);
+			}
 		}
-		catch (SQLException e) 
+		catch (Exception e) 
 		{
-			System.out.println("[server.database.UserDAO]: get() not working...");
+			database.endTransaction(false);
+//			System.out.println("END_TRANSACTION: userDAO get()");
 			DatabaseException serverEx = new DatabaseException(e.getMessage(), e);
 			throw serverEx;
 		}		
 		finally 
 		{
+			database.endTransaction(true);
 			Database.safeClose(rs);
 			Database.safeClose(stmt);
 		}
 		
 		return myUser;	
 	}
+
+	// DONE
+	public List<User> getAll() throws DatabaseException
+	{
+		List<User> result = new ArrayList<User>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			database.startTransaction();
+			
+//			User (ID integer not null primary key autoincrement, username text, password text, firstname text, lastname text, email text, indexedRecords int, currentBatchID int );
+			String query = "SELECT * FROM User";
+			stmt = database.getConnection().prepareStatement(query);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) 
+			{
+				String username =		rs.getString(2);
+				String password =		rs.getString(3);
+				String firstname =		rs.getString(4);
+				String lastname = 		rs.getString(5);
+				String email = 			rs.getString(6);
+				int indexedrecords = 	rs.getInt(7);
+				int currentBatchID = 	rs.getInt(8);
+
+				result.add(new User(username, password, firstname, lastname, email, indexedrecords, currentBatchID));
+			}
+		} 
+		catch (SQLException e) 
+		{
+			database.endTransaction(false);
+			//System.out.println("END_TRANSACTION: userDAO getAll()");
+			throw new DatabaseException(e.getMessage(), e);
+		} 
+		finally 
+		{
+			database.endTransaction(true);
+			//System.out.println("END_TRANSACTION: userDAO getAll()");
+			Database.safeClose(rs);
+			Database.safeClose(stmt);
+		}
+		
+		return result;
+	}
 	
-	/**
-	 * Updates the specified user with updated fields.
-	 * @param updateUser
-	 */
-	public void update(User updateUser) throws DatabaseException
+	//	DONE
+	public void update(User user) throws DatabaseException
 	{
 		PreparedStatement stmt = null;
 		try
-		{     
+		{
+			database.startTransaction();
+			//System.out.println("START_TRANSACTION: userDAO update()");
+			
+//			User (ID integer not null primary key autoincrement, username text, password text, firstname text, lastname text, email text, indexedRecords int, currentBatchID int );
 			String sql = "UPDATE User " 
-						+ "SET password = ?, firstname = ?, lastname = ?, email = ?, recordsindexed = ?, currentbatch = ?"
+						+ "SET password = ?, firstname = ?, lastname = ?, email = ?, indexedRecords = ?, currentBatchID = ?"
 						+ "WHERE  username = ?";
 			
 			stmt = database.getConnection().prepareStatement(sql);  
-			stmt.setString(1, updateUser.getPassword());     
-			stmt.setString(2, updateUser.getFirstname());
-			stmt.setString(3, updateUser.getLastname());
-			stmt.setString(4, updateUser.getEmail());
-			stmt.setInt(5, updateUser.getRecordsIndexed());
-			stmt.setInt(6, updateUser.getCurrentBatchID());
-			stmt.setString(7, updateUser.getUsername());   
+			stmt.setString	(1, user.getPassword());     
+			stmt.setString	(2, user.getFirstname());
+			stmt.setString	(3, user.getLastname());
+			stmt.setString	(4, user.getEmail());
+			stmt.setInt		(5, user.getRecordsIndexed());
+			stmt.setInt		(6, user.getCurrentBatchID());
+			stmt.setString	(7, user.getUsername());   
 
 			if (stmt.executeUpdate() != 1) 
 			{
-				throw new DatabaseException("Could not update contact");
+				throw new DatabaseException("Could not update user.");
 			}
 		}
 		catch (SQLException e) 
 		{
-			throw new DatabaseException("Could not update contact", e);
+			database.endTransaction(false);
+			//System.out.println("END_TRANSACTION: userDAO update()");
+			throw new DatabaseException("Could not update user.", e);
 		}
 		finally 
 		{
+			database.endTransaction(true);
+			//System.out.println("END_TRANSACTION: userDAO update()");
 			Database.safeClose(stmt);
 		}
 	}

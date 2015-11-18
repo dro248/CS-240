@@ -2,13 +2,13 @@ package shared.communication;
 
 public class DownloadBatchParams extends UserParams
 { 
-	int projectID;
+	private int parentProjectID;
 	
-	public DownloadBatchParams(String _username, String _password, int _projectID) 
+	public DownloadBatchParams(String _username, String _password, int _parentProjectID) 
 	{
 		super(_username, _password);
-		projectID = _projectID;
+		parentProjectID = _parentProjectID;
 	}
 	
-	public int getProjectID() { return projectID; }
+	public int getParentProjectID() { return parentProjectID; }
 }

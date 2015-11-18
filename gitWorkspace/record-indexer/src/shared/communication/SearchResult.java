@@ -1,29 +1,31 @@
 package shared.communication;
 
-import java.io.*;
+import java.util.*;
 
 public class SearchResult
 {
-	int batchID;
-	File imgURL;
-	int recordNum;
-	int fieldID;
-	boolean fail;
+	private List<List<String>> results;
 	
-	
-	public SearchResult(int _batchID, File _imgURL, int _recordNum, int _fieldID, boolean _fail)
+	public SearchResult(List<List<String>> _results)
 	{
-		batchID = _batchID;
-		imgURL = _imgURL;
-		recordNum = _recordNum;
-		fieldID = _fieldID;
-		fail = _fail;
+		results = _results;
 	}
 	
-	
-	public int getBatchID()		{ return batchID; 	}
-	public File getImgURL()		{ return imgURL; 	}
-	public int getRecordNum()	{ return recordNum; }
-	public int getFieldID()		{ return fieldID; 	}
-	public boolean fail()		{ return fail;		}
+	public List<List<String>> getResults() { return results; } 
+	public String toString(String url_prefix)
+	{		
+		StringBuilder output = new StringBuilder();
+		for(List<String> myList : results)
+		{
+			for(int i = 0; i < myList.size(); i++)
+			{
+				if(i % 4 == 1)
+				{
+					output.append(url_prefix + "/Records/");
+				}
+				output.append(myList.get(i));
+			}
+		}
+		return output.toString();
+	}
 }

@@ -2,15 +2,12 @@ package server.database;
 
 import java.io.*;
 import java.sql.*;
-import java.util.logging.*;
-
 
 public class Database 
 {	
 	private static final String DATABASE_DIRECTORY = "database";
 	private static final String DATABASE_FILE = "FamilySearchDB.sqlite";
 	private static final String DATABASE_URL = "jdbc:sqlite:" + DATABASE_DIRECTORY + File.separator + DATABASE_FILE;
-//	private static Logger logger;
 	
 	// DAOs & Connection
 	private BatchDAO 	batchDAO;
@@ -22,22 +19,14 @@ public class Database
 	private Connection 	connection;
 	
 	// GETTERS
-	public BatchDAO getBatchDAO() 		{ return batchDAO;		}
-	public CellDAO getCellDAO() 		{ return cellDAO;		}
-	public FieldDAO getFieldDAO() 		{ return fieldDAO;		}
-	public ProjectDAO getProjectDAO() 	{ return projectDAO;	}
-	public RecordDAO getRecordDAO() 	{ return recordDAO;		}
-	public UserDAO getUserDAO() 		{ return userDAO;		}
-	public Connection getConnection() 	{ return connection;	}
+	public BatchDAO getBatchDAO() 		{ return batchDAO;	}
+	public CellDAO getCellDAO() 		{ return cellDAO;	}
+	public FieldDAO getFieldDAO() 		{ return fieldDAO;	}
+	public ProjectDAO getProjectDAO() 	{ return projectDAO;}
+	public RecordDAO getRecordDAO() 	{ return recordDAO;	}
+	public UserDAO getUserDAO() 		{ return userDAO;	}
+	public Connection getConnection() 	{ return connection;}
 	
-	
-	// We don't need this...
-/*	static 
-	{
-//		logger = Logger.getLogger("contactmanager");
-		System.out.println("");
-	}*/
-
 	public static void initialize() throws DatabaseException 
 	{
 		try
@@ -48,7 +37,6 @@ public class Database
 		catch(ClassNotFoundException e) 
 		{
 			DatabaseException serverEx = new DatabaseException("[Database.initialize()] Could not load database driver", e);
-//			logger.throwing("server.database.Database", "initialize", serverEx);
 			throw serverEx; 
 		}
 	}
@@ -69,8 +57,7 @@ public class Database
 	public void startTransaction() throws DatabaseException 
 	{
 		try 
-		{
-			assert (connection == null);			
+		{		
 			connection = DriverManager.getConnection(DATABASE_URL);
 			connection.setAutoCommit(false);
 		}
@@ -92,7 +79,6 @@ public class Database
 			}
 			catch (SQLException e) 
 			{
-				System.out.println("[Database.endTransaction()] Could not end transaction");
 				e.printStackTrace();
 			}
 			finally 
@@ -112,9 +98,7 @@ public class Database
 				conn.close();
 			}
 			catch (SQLException e) 
-			{
-				// ...
-			}
+			{}
 		}
 	}
 	
@@ -127,9 +111,7 @@ public class Database
 				stmt.close();
 			}
 			catch (SQLException e) 
-			{
-				// ...
-			}
+			{}
 		}
 	}
 	
@@ -142,9 +124,7 @@ public class Database
 				stmt.close();
 			}
 			catch (SQLException e) 
-			{
-				// ...
-			}
+			{}
 		}
 	}
 	
@@ -157,9 +137,7 @@ public class Database
 				rs.close();
 			}
 			catch (SQLException e) 
-			{
-				// ...
-			}
+			{}
 		}
 	}
 	

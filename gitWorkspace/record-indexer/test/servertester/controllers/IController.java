@@ -1,7 +1,7 @@
 package servertester.controllers;
 
-public interface IController {
-
+public interface IController 
+{
 	void initialize();
 	
 	void operationSelected();
