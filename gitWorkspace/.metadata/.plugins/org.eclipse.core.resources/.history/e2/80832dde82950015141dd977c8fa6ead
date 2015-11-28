@@ -1,0 +1,70 @@
+package client.facade;
+
+import java.util.*;
+import shared.model.*;
+
+public class BatchState 
+{
+//	private String[][] values;
+//	private Cell selectedCell;
+//	private List<BatchStateListener> listeners;
+	
+	// Purpose:
+	// 
+	private transient ArrayList<BatchStateListener> batchStateListeners = new ArrayList<BatchStateListener>();	
+	
+	public void BatchState() 
+	{
+		// DEFAULT VALUES
+		
+		
+	}
+	
+	public void addListener(BatchStateListener l) 
+	{
+		listeners.add(l);
+	}
+	
+	public void setValue(Cell cell, String value) 
+	{
+		String oldValue = values[cell.record][cell.field];
+        
+		values[cell.record][cell.field] = value;
+		
+		if (!value.equals(oldValue)) {
+        
+			for (BatchStateListener l : listeners) 
+			{
+				l.valueChanged(cell, value);
+			}
+		}
+	}
+	
+	public String getValue(Cell cell) 
+	{
+		return values[cell.record][cell.field];
+	}
+	
+	public void setSelectedCell(Cell selCell) 
+	{
+		
+		Cell oldValue = selectedCell;
+        
+		selectedCell = selCell;
+		
+		if (selCell.record != oldValue.record || 
+			selCell.field != oldValue.field) 
+		{
+        
+			for (BatchStateListener l : listeners) 
+			{
+				l.selectedCellChanged(selCell);
+			}
+		}
+	}
+	
+	public Cell getSelectedCell() 
+	{
+		return selectedCell;
+	}
+}

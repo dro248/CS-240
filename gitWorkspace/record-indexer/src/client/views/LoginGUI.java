@@ -1,26 +1,21 @@
 package client.views;
 
 import static servertester.views.Constants.*;
-
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
-
 import server.handler.ValidateUserHandler;
 import shared.communication.UserParams;
 import shared.communication.UserResult;
 import shared.model.User;
 import client.communication.ClientCommunicator;
-//import client.controllers.LoginController;
+import client.facade.ClientFacade;
+import client.views.mainWindow.Indexer;
 
 
+@SuppressWarnings("serial")
 public class LoginGUI extends JFrame
-{	
-//	private String HOST;
-//	private int PORT;
-//	private LoginController controller = new LoginController();
-	
+{
 	private JPanel rootPanel;
 	private JPanel usernamePanel;
 	private JPanel passwordPanel;
@@ -31,11 +26,11 @@ public class LoginGUI extends JFrame
 	private JPasswordField passwordField;
 	private JButton loginButton;
 	private JButton exitButton;
-	private RecordIndexer indexerFrame;
+	private Indexer indexerFrame;
 	
 	
 	
-	public LoginGUI(String title, RecordIndexer _indexerFrame)
+	public LoginGUI(String title, Indexer _indexerFrame)
 	{
 		super(title);
 		
@@ -100,19 +95,14 @@ public class LoginGUI extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-//				getController().executeOperation();
-				
 				try
 				{
 					String password = new String(passwordField.getPassword());
-					
 					UserParams params = new UserParams(usernameField.getText(), password);
-					UserResult result = ClientCommunicator.getSingleton().validateUser(params);
-					
+					UserResult result = ClientFacade.get().validateUser(params);
 					User user = result.getUser();
 					
 					createGoodDialog(user);
-					
 				}
 				catch(Exception e)
 				{
@@ -186,7 +176,7 @@ public class LoginGUI extends JFrame
 	private void createBadDialog()
 	{
 		// Create Good Dialog
-		JDialog badDialog = new JDialog();
+		final JDialog badDialog = new JDialog();
 		badDialog.setTitle("Login Failed");
 		badDialog.setLocationRelativeTo(null);
 		
@@ -214,7 +204,7 @@ public class LoginGUI extends JFrame
 		
 		this.setVisible(false);
 		
-		LoginGUI mainframe = this;
+		final LoginGUI mainframe = this;
 		
 		okButton.addActionListener(new ActionListener() 
 		{

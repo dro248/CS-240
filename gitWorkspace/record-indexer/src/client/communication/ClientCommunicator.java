@@ -11,7 +11,7 @@ import client.*;
 
 public class ClientCommunicator 
 {
-	private static ClientCommunicator singleton = null;
+/*	private static ClientCommunicator singleton = null;
 	public static ClientCommunicator getSingleton()
 	{
 		if (singleton == null)
@@ -20,7 +20,7 @@ public class ClientCommunicator
 		}
 		
 		return singleton;
-	}
+	}*/
 	
 	
 	private static String SERVER_HOST = "localhost";

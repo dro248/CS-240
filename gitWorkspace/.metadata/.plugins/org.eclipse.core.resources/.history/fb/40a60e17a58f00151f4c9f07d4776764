@@ -1,0 +1,19 @@
+package client.views;
+
+import java.awt.Dimension;
+import javax.swing.JFrame;
+
+public class RecordIndexer extends JFrame
+{
+	public RecordIndexer(String title)
+	{
+		super(title);
+		createComponents();
+	}
+	
+	public void createComponents()
+	{
+		setLocationRelativeTo(null);
+		setPreferredSize(new Dimension(100, 100));
+	}
+}
