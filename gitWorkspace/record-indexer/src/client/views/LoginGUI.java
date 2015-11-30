@@ -38,7 +38,6 @@ public class LoginGUI extends JFrame
 		createComponents();
 	}
 	
-	
 	private void createComponents()
 	{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -215,8 +214,6 @@ public class LoginGUI extends JFrame
 				
 				mainframe.setVisible(true);
 			}
-		});
-		
+		});	
 	}
-	
 }
