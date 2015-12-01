@@ -1,0 +1,20 @@
+package client.views.mainWindow;
+
+import javax.swing.*;
+
+@SuppressWarnings("serial")
+public class downloadBatchGUI extends JDialog
+{
+	private JPanel topPanel;
+	private JPanel bottomPanel;
+	private JLabel projectLabel;
+	private JComboBox<String> projectsList;
+	private JButton viewSampleButton;
+	private JButton cancelButton;
+	private JButton downloadButton;
+	
+	
+	
+	
+	
+}

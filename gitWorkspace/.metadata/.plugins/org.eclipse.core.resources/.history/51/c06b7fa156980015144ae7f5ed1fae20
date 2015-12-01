@@ -1,0 +1,44 @@
+package client.views.mainWindow;
+
+import javax.swing.*;
+
+@SuppressWarnings("serial")
+public class downloadBatchGUI extends JDialog
+{
+	private JPanel topPanel;
+	private JPanel bottomPanel;
+	private JLabel projectLabel;
+	private JComboBox<String> projectsComboBox;		// This might not be of type String
+	private JButton viewSampleButton;
+	private JButton cancelButton;
+	private JButton downloadButton;
+	
+	
+	public downloadBatchGUI()
+	{
+		
+		
+	}
+	
+	public void initialize()
+	{
+		topPanel 			= new JPanel();
+		bottomPanel 		= new JPanel();
+		projectLabel 		= new JLabel();
+		projectsComboBox	= new JComboBox<String>();
+		viewSampleButton 	= new JButton();
+		cancelButton 		= new JButton();
+		downloadButton 		= new JButton();
+	}
+	
+	public void createComponents()
+	{
+		this.setTitle("Download Batch");
+		
+		topPanel.setLayout();
+		
+		
+		
+	}
+	
+}

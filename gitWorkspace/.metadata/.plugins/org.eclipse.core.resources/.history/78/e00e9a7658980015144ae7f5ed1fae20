@@ -1,0 +1,63 @@
+package client.views.mainWindow;
+
+import javax.swing.*;
+
+@SuppressWarnings("serial")
+public class downloadBatchGUI extends JDialog
+{
+	private JPanel topPanel;
+	private JPanel bottomPanel;
+	private JLabel projectLabel;
+	private JComboBox<String> projectsComboBox;		// This might not be of type String
+	private JButton viewSampleButton;
+	private JButton cancelButton;
+	private JButton downloadButton;
+	
+	
+	public downloadBatchGUI()
+	{
+		
+		
+	}
+	
+	public void initialize()
+	{
+		topPanel 			= new JPanel();
+		bottomPanel 		= new JPanel();
+		projectLabel 		= new JLabel("Project: ");
+		projectsComboBox	= new JComboBox<String>();
+		viewSampleButton 	= new JButton("View Sample");
+		cancelButton 		= new JButton("Cancel");
+		downloadButton 		= new JButton("Download");
+	}
+	
+	public void createComponents()
+	{
+		this.setTitle("Download Batch");
+		this.setLocationRelativeTo(null);
+		
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
+		
+		
+		// Populate projectsComboBox with Projects
+		populateComboBox();
+		
+		
+		topPanel.add(projectLabel);
+		topPanel.add(projectsComboBox);
+		topPanel.add(viewSampleButton);
+		bottomPanel.add(cancelButton);
+		bottomPanel.add(downloadButton);
+	}
+	
+	
+	private void populateComboBox()
+	{
+		projectsComboBox.addItem("test1");
+		projectsComboBox.addItem("test2");
+		projectsComboBox.addItem("test3");
+		projectsComboBox.addItem("test4");
+	}
+	
+}

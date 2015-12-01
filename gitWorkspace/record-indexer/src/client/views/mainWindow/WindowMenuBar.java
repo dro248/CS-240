@@ -4,30 +4,24 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import javax.swing.*;
-
-import shared.communication.ProjectParams;
-import shared.communication.ProjectResult;
-import shared.model.Cell;
-import shared.model.Project;
-import client.facade.BatchState;
-import client.facade.BatchStateListener;
-import client.facade.ClientFacade;
-import client.facade.Coordinate;
+import shared.communication.*;
+import shared.model.*;
+import client.facade.*;
 import client.views.LoginGUI;
 
 
 @SuppressWarnings("serial")
 public class WindowMenuBar extends JMenuBar implements BatchStateListener
 {
-	private JMenu 		fileMenu;
-	private JMenuItem 	downloadBatchButton;
-	private JMenuItem 	logoutButton;
-	private JMenuItem 	exitButton;
-	private BatchState 	batchState;	// this references the batchState in the ClientFacade
-	private Indexer 	indexerWindow;
-	private LoginGUI 	loginWindow;
+	private JMenu 				fileMenu;
+	private JMenuItem 			downloadBatchButton;
+	private JMenuItem 			logoutButton;
+	private JMenuItem 			exitButton;
+	private BatchState 			batchState;	// this references the batchState in the ClientFacade
+	private Indexer 			indexerWindow;
+	private LoginGUI 			loginWindow;
+	private downloadBatchGUI	downloadDialog;
 	
 	public WindowMenuBar(Indexer _indexer, LoginGUI _login)
 	{	
@@ -50,8 +44,12 @@ public class WindowMenuBar extends JMenuBar implements BatchStateListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ProjectResult myProjects = ClientFacade.get().getProjects(new ProjectParams(
-						batchState.getUser().getUsername(), batchState.getUser().getPassword()));
+				downloadDialog.setVisible(true);
+				
+				
+				// this doesn't go here! It goes in "downloadBatchGUI.java"
+				/*ProjectResult myProjects = ClientFacade.get().getProjects(
+					new ProjectParams(batchState.getUser().getUsername(), batchState.getUser().getPassword()));*/
 			}
 		});
 		
@@ -81,6 +79,9 @@ public class WindowMenuBar extends JMenuBar implements BatchStateListener
 	
 	void initialize()
 	{
+		downloadDialog		= new downloadBatchGUI();
+		downloadDialog.setVisible(false);
+		
 		fileMenu 			= new JMenu("File");
 		downloadBatchButton = new JMenuItem("Download Batch");
 		logoutButton 		= new JMenuItem("Logout");
