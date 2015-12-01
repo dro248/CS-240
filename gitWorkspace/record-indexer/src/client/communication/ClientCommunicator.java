@@ -39,42 +39,28 @@ public class ClientCommunicator
 	}
 	
 
-	public UserResult validateUser(UserParams params) throws ClientException 
-	{
-		return (UserResult)doPost("/ValidateUser", params);
-	}
+	public UserResult validateUser(UserParams params) 					 throws ClientException 
+		{ return (UserResult)doPost("/ValidateUser", params); }
 	
-	public ProjectResult getProjects(ProjectParams params) throws ClientException 
-	{
-		return (ProjectResult)doPost("/GetProjects", params);
-	}
+	public ProjectResult getProjects(ProjectParams params) 				 throws ClientException 
+		{ return (ProjectResult)doPost("/GetProjects", params); }
 	
-	public ImgResult getSampleImage(ImgParams params) throws ClientException 
-	{
-		return (ImgResult)doPost("/GetSampleImage", params);
-	}
+	public ImgResult getSampleImage(ImgParams params) 					 throws ClientException 
+		{ return (ImgResult)doPost("/GetSampleImage", params); }
 	
 	public DownloadBatchResult downloadBatch(DownloadBatchParams params) throws ClientException 
-	{
-		return (DownloadBatchResult)doPost("/DownloadBatch", params);
-	}
+		{ return (DownloadBatchResult)doPost("/DownloadBatch", params); }
 	
-	public SubmitBatchResult submitBatch(SubmitBatchParams params) throws ClientException 
-	{
-		return (SubmitBatchResult)doPost("/SubmitBatch", params);
-	}
+	public SubmitBatchResult submitBatch(SubmitBatchParams params) 		 throws ClientException 
+		{ return (SubmitBatchResult)doPost("/SubmitBatch", params); }
 	
-	public FieldResult getFields(FieldParams params) throws ClientException 
-	{
-		return (FieldResult)doPost("/GetFields", params);
-	}
+	public FieldResult getFields(FieldParams params) 					 throws ClientException 
+		{ return (FieldResult)doPost("/GetFields", params); }
 	
-	public SearchResult search(SearchParams params) throws ClientException 
-	{
-		return (SearchResult)doPost("/Search", params);
-	}
+	public SearchResult search(SearchParams params) 					 throws ClientException 
+		{ return (SearchResult)doPost("/Search", params); }
 		
-	private Object doPost(String urlPath, Object postData) throws ClientException 
+	private Object doPost(String urlPath, Object postData) 				 throws ClientException 
 	{
 		try 
 		{

@@ -16,17 +16,17 @@ import client.views.mainWindow.Indexer;
 @SuppressWarnings("serial")
 public class LoginGUI extends JFrame
 {
-	private JPanel rootPanel;
-	private JPanel usernamePanel;
-	private JPanel passwordPanel;
-	private JPanel buttonPanel;
-	private JLabel usernameLabel;
-	private JLabel passwordLabel;
-	private JTextField usernameField;
-	private JPasswordField passwordField;
-	private JButton loginButton;
-	private JButton exitButton;
-	private Indexer indexerFrame;
+	private JPanel 			rootPanel;
+	private JPanel 			usernamePanel;
+	private JPanel 			passwordPanel;
+	private JPanel 			buttonPanel;
+	private JLabel 			usernameLabel;
+	private JLabel 			passwordLabel;
+	private JTextField 		usernameField;
+	private JPasswordField 	passwordField;
+	private JButton 		loginButton;
+	private JButton 		exitButton;
+	private Indexer 		indexerFrame;
 	
 	
 	
@@ -213,5 +213,11 @@ public class LoginGUI extends JFrame
 				mainframe.setVisible(true);
 			}
 		});	
+	}
+
+	public void clear()
+	{
+		usernameField.setText("");
+		passwordField.setText("");
 	}
 }

@@ -1,5 +1,6 @@
 package client.views.mainWindow.bottom.right;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ public class ImageNavigationPanel extends JPanel implements BatchStateListener
 	{
 		batchState = ClientFacade.get().getBatchState();
 		batchState.addListener(this);
+		this.setBackground(Color.GRAY);
 	}
 	
 	@Override
@@ -44,6 +46,27 @@ public class ImageNavigationPanel extends JPanel implements BatchStateListener
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getVPaneDivPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getHPaneDivPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setButtonAvailability()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,0 +1,25 @@
+<client.facade.BatchState>
+  <user>
+    <username>test1</username>
+    <password>test1</password>
+    <firstname>Test</firstname>
+    <lastname>One</lastname>
+    <email>test1@gmail.com</email>
+    <recordsIndexed>0</recordsIndexed>
+    <currentBatchID>0</currentBatchID>
+  </user>
+  <windowPosition>
+    <x__value>238</x__value>
+    <y__value>63</y__value>
+  </windowPosition>
+  <windowSize>
+    <width>1019</width>
+    <height>718</height>
+  </windowSize>
+  <vPanePosition>375</vPanePosition>
+  <hPanePosition>463</hPanePosition>
+  <zoomLevel>0.0</zoomLevel>
+  <scrollPosition>0</scrollPosition>
+  <highlightsVisible>false</highlightsVisible>
+  <imageInverted>false</imageInverted>
+</client.facade.BatchState>

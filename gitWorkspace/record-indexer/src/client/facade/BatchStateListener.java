@@ -11,4 +11,7 @@ public interface BatchStateListener
 	
 	public Coordinate getWindowPosition();
 	public Dimension getWindowSize();
+	public int getVPaneDivPosition();
+	public int getHPaneDivPosition();
+	public void setButtonAvailability();
 }

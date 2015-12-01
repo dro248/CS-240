@@ -20,10 +20,10 @@ public class BatchState implements BatchStateListener
 	private Cell 			selectedCell;
 	
 	// Window State
-	private Coordinate 	windowPosition;
-	private Dimension 	windowSize;
-	private Coordinate 	vPanePosition;	// Position of the vertical split-panel divider
-	private	Coordinate	hPanePosition;	// Position of the horizontal split-panel divider
+	Coordinate 	windowPosition;
+	Dimension 	windowSize;
+	int 		vPanePosition;	// Position of the vertical split-panel divider
+	int			hPanePosition;	// Position of the horizontal split-panel divider
 	
 	// Image State
 	private double 	zoomLevel;
@@ -50,8 +50,8 @@ public class BatchState implements BatchStateListener
 			selectedCell		= savedState.getSelectedCell();
 			windowPosition 		= savedState.getWindowPosition();
 			windowSize			= savedState.getWindowSize();
-			vPanePosition		= savedState.getvPanePosition();
-			hPanePosition		= savedState.gethPanePosition();
+			vPanePosition		= savedState.getVPaneDivPosition();
+			hPanePosition		= savedState.getHPaneDivPosition();
 			zoomLevel			= savedState.getZoomLevel();
 			scrollPosition		= savedState.getScrollPosition();
 			highlightsVisible	= savedState.isHighlightsVisible();
@@ -72,8 +72,8 @@ public class BatchState implements BatchStateListener
 			// Window State
 			windowPosition		= new Coordinate(10, 10);
 			windowSize 			= new Dimension(1000, 700);
-			vPanePosition		= null;
-			hPanePosition		= null;
+			vPanePosition		= 365;
+			hPanePosition		= 450;
 			
 			// Image State
 			zoomLevel 			= 0;
@@ -85,7 +85,7 @@ public class BatchState implements BatchStateListener
 	
 	public void addListener(BatchStateListener l) { listeners.add(l); }
 	
-	// works!
+	// WORKS!
 	public void save()
 	{
 		updateValues();
@@ -103,9 +103,9 @@ public class BatchState implements BatchStateListener
 		catch (FileNotFoundException e) {}
 	}
 	
+	// WORKS!
 	private BatchState deserializeFile(String _username)
 	{
-		// TODO: does not work yet
 		BatchState output = null;
 		File in_file = new File("./SavedStates/" + _username + ".xml");
 		
@@ -128,6 +128,8 @@ public class BatchState implements BatchStateListener
 	{
 		windowPosition 	= listeners.get(0).getWindowPosition();
 		windowSize		= listeners.get(0).getWindowSize();
+		vPanePosition	= listeners.get(0).getVPaneDivPosition();
+		hPanePosition	= listeners.get(0).getHPaneDivPosition();
 		
 		// TODO ... update all values!
 	}
@@ -141,8 +143,6 @@ public class BatchState implements BatchStateListener
 	public String[][] getCellValues()			{ return cellValues; 		}
 	public Coordinate getWindowPosition()		{ return windowPosition; 	}
 	public Dimension getWindowSize() 			{ return windowSize; 		}
-	public Coordinate getvPanePosition()		{ return vPanePosition; 	}
-	public Coordinate gethPanePosition()		{ return hPanePosition;		}
 	public double getZoomLevel()				{ return zoomLevel;			}
 	public int getScrollPosition()				{ return scrollPosition;	}
 	public boolean isHighlightsVisible()		{ return highlightsVisible; }
@@ -159,13 +159,12 @@ public class BatchState implements BatchStateListener
 	public void setCellValues(String[][] cellValues)					{ this.cellValues = cellValues; 				}
 	public void setWindowPosition(Coordinate windowPosition)			{ this.windowPosition = windowPosition; 		}
 	public void setWindowSize(Dimension windowSize)						{ this.windowSize = windowSize; 				}
-	public void setvPanePosition(Coordinate vPanePosition) 				{ this.vPanePosition = vPanePosition; 			}
-	public void sethPanePosition(Coordinate hPanePosition)				{ this.hPanePosition = hPanePosition; 			}
+	public void setvPanePosition(int vPanePosition) 					{ this.vPanePosition = vPanePosition; 			}
+	public void sethPanePosition(int hPanePosition)						{ this.hPanePosition = hPanePosition; 			}
 	public void setZoomLevel(double zoomLevel)							{ this.zoomLevel = zoomLevel; 					}
 	public void setScrollPosition(int scrollPosition)					{ this.scrollPosition = scrollPosition; 		}
 	public void setHighlightsVisible(boolean highlightsVisible)	 		{ this.highlightsVisible = highlightsVisible; 	}
-	public void setImageInverted(boolean imageInverted)					{ this.imageInverted = imageInverted; 			}
-	
+	public void setImageInverted(boolean imageInverted)					{ this.imageInverted = imageInverted; 			}	
 	public void setValue(Cell cell, String value) 
 	{
 		String oldValue = cellValues[cell.getParentRecordID()][cell.getParentFieldID()];
@@ -180,7 +179,6 @@ public class BatchState implements BatchStateListener
 			}
 		}
 	}
-	
 	public void setSelectedCell(Cell selCell) 
 	{
 		Cell oldValue = selectedCell;
@@ -198,17 +196,32 @@ public class BatchState implements BatchStateListener
 		}
 	}
 
+	
+	
+	
 	@Override
 	public void valueChanged(Cell cell, String newValue)
 	{
 		// TODO Auto-generated method stub
-		
 	}
-
 	@Override
 	public void selectedCellChanged(Cell newSelectedCell)
 	{
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public int getVPaneDivPosition() { return vPanePosition; }
+
+	@Override
+	public int getHPaneDivPosition() { return hPanePosition; }
+
+	@Override
+	public void setButtonAvailability() 
+	{
+		for(BatchStateListener l : listeners)
+		{
+			l.setButtonAvailability();
+		}
 	}
 }

@@ -23,15 +23,15 @@ public class Main
             	ClientFacade.get().setHost(HOST);
             	ClientFacade.get().setPort(PORT);
             	
-            	Indexer indexerFrame 	= new Indexer("Indexer");
-//            	indexerFrame.createComponents();
+            	Indexer indexerWindow = new Indexer("Indexer");
+            	LoginGUI loginWindow = new LoginGUI("Login to GUI", indexerWindow);
             	
-            	LoginGUI loginFrame = new LoginGUI("Login to GUI", indexerFrame);
-            	indexerFrame.pack();
-                indexerFrame.setVisible(false);
+            	indexerWindow.setLoginWindow(loginWindow);
+            	indexerWindow.pack();
+                indexerWindow.setVisible(false);
                 
-                loginFrame.pack();
-                loginFrame.setVisible(true);
+                loginWindow.pack();
+                loginWindow.setVisible(true);
             }
         });
     }

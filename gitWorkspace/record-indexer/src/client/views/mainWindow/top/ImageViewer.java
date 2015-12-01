@@ -1,5 +1,6 @@
 package client.views.mainWindow.top;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.*;
@@ -45,6 +46,27 @@ public class ImageViewer extends JComponent implements BatchStateListener
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getVPaneDivPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getHPaneDivPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setButtonAvailability()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 

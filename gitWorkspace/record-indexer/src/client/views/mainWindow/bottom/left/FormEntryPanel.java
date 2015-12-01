@@ -44,4 +44,25 @@ public class FormEntryPanel extends JPanel implements BatchStateListener
 		return null;
 	}
 
+	@Override
+	public int getVPaneDivPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getHPaneDivPosition()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setButtonAvailability()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -2,9 +2,14 @@ package client.views.mainWindow;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import shared.model.Cell;
+
 import com.sun.org.apache.bcel.internal.classfile.Field;
+
+import client.views.LoginGUI;
 import client.views.mainWindow.bottom.left.*;
 import client.views.mainWindow.bottom.right.*;
 import client.views.mainWindow.top.ImageViewer;
@@ -13,25 +18,26 @@ import client.facade.*;
 @SuppressWarnings("serial")
 public class Indexer extends JFrame implements BatchStateListener
 {
-	private JMenuBar menuBar;
-	private JPanel buttonBar;
-	private JButton zoomInButton;
-	private JButton zoomOutButton;
-	private JButton invertButton;
-	private JButton toggleButton;
-	private JButton saveButton;
-	private JButton submitButton;
-	private JSplitPane v_SplitPane;
-	private JSplitPane h_SplitPane;
-	private JComponent imageViewer;
+	private JMenuBar 	menuBar;
+	private JPanel 		buttonBar;
+	private JButton 	zoomInButton;
+	private JButton		zoomOutButton;
+	private JButton 	invertButton;
+	private JButton 	toggleButton;
+	private JButton 	saveButton;
+	private JButton 	submitButton;
+	private JSplitPane 	v_SplitPane;
+	private JSplitPane 	h_SplitPane;
+	private JComponent 	imageViewer;
 	private JTabbedPane leftTabbedPane;
 	private JTabbedPane rightTabbedPane;
-	private JPanel tableEntry;
-	private JPanel formEntry;
-	private JPanel fieldHelp;
-	private JPanel imageNavigation;
-	private BatchState batchState;		// this is referencing the same batchState within the clientFacade
-
+	private JPanel 		tableEntry;
+	private JPanel 		formEntry;
+	private JPanel 		fieldHelp;
+	private JPanel 		imageNavigation;
+	private BatchState 	batchState;			// this is the reference to the batchState within the clientFacade
+	private LoginGUI 	loginWindow;		// this is the reference to the LoginGUI
+	
 	public Indexer(String title)
 	{
 		super(title);
@@ -39,9 +45,11 @@ public class Indexer extends JFrame implements BatchStateListener
 	
 	public void initialize()
 	{
-		setBatchState();
+		// Set batchState
+		batchState = ClientFacade.get().getBatchState();
+		batchState.addListener(this);
 		
-		menuBar 		= new WindowMenuBar();
+		menuBar 		= new WindowMenuBar(this, loginWindow);
 		buttonBar 		= new JPanel();
 		zoomInButton	= new JButton("Zoom In");
 		zoomOutButton	= new JButton("Zoom Out");
@@ -60,6 +68,7 @@ public class Indexer extends JFrame implements BatchStateListener
 		imageNavigation = new ImageNavigationPanel();
 		
 		createComponents();
+		setButtonAvailability();
 	}
 	
 	private void createComponents()
@@ -82,6 +91,7 @@ public class Indexer extends JFrame implements BatchStateListener
 		buttonBar.add(submitButton);
 		this.add(buttonBar, BorderLayout.NORTH);
 		
+		
 		// setup TabbedPanes
 		leftTabbedPane.addTab("Table Entry", tableEntry);
 		leftTabbedPane.addTab("Form Entry", formEntry);
@@ -89,21 +99,24 @@ public class Indexer extends JFrame implements BatchStateListener
 		rightTabbedPane.addTab("Field Help", fieldHelp);
 		rightTabbedPane.addTab("Image Navigation", imageNavigation);
 		
-		
 		// setup Horizontal splitPane
 		h_SplitPane.setLeftComponent(leftTabbedPane);
 		h_SplitPane.setRightComponent(rightTabbedPane);
+		h_SplitPane.setDividerLocation(batchState.getHPaneDivPosition());
+		h_SplitPane.setResizeWeight(.5);
 		
 		// setup Vertical splitPane
+		v_SplitPane.setBackground(Color.GRAY);
 		v_SplitPane.setTopComponent(imageViewer);
 		v_SplitPane.setBottomComponent(h_SplitPane);
-		
-		v_SplitPane.setOneTouchExpandable(true);
-		v_SplitPane.setDividerLocation(150);
+		v_SplitPane.setDividerLocation(batchState.getVPaneDivPosition());
+		v_SplitPane.setResizeWeight(.7);
 		
 		this.add(v_SplitPane, BorderLayout.CENTER);
 		
-		// add event_listeners for buttons
+		
+		
+		// LISTENERS
 		saveButton.addActionListener(new ActionListener()
 		{
 			@Override
@@ -117,27 +130,50 @@ public class Indexer extends JFrame implements BatchStateListener
 		
 		this.pack();
 	}
-	
-	private void setBatchState()
-	{
-		batchState = ClientFacade.get().getBatchState();
-		batchState.addListener(this);
-	}
 
 	@Override
 	public void valueChanged(Cell cell, String newValue) 
 	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void selectedCellChanged(Cell newSelectedCell) 
 	{
 		// TODO Auto-generated method stub
-		
 	}
 
-	public Coordinate getWindowPosition() 	{ return new Coordinate(this.getX(), this.getY()); }
-	public Dimension getWindowSize()		{ return this.getSize(); }
+	public Coordinate getWindowPosition() 	
+	{ 
+		return new Coordinate(this.getX(), this.getY());
+	}
+	public Dimension getWindowSize() { return this.getSize(); }
+	public int getVPaneDivPosition() { return this.v_SplitPane.getDividerLocation(); }
+	public int getHPaneDivPosition() { return this.h_SplitPane.getDividerLocation(); }
+
+	public void setLoginWindow(LoginGUI _login)	{ loginWindow = _login; }
+
+	@Override
+	public void setButtonAvailability() 
+	{
+		if(batchState.getBatch() == null)
+		{
+			zoomInButton.setEnabled(false);
+			zoomOutButton.setEnabled(false);
+			invertButton.setEnabled(false);
+			toggleButton.setEnabled(false);
+			saveButton.setEnabled(false);
+			submitButton.setEnabled(false);
+		}
+		else
+		{
+			zoomInButton.setEnabled(true);
+			zoomOutButton.setEnabled(true);
+			invertButton.setEnabled(true);
+			toggleButton.setEnabled(true);
+			saveButton.setEnabled(true);
+			submitButton.setEnabled(true);
+		}
+	}
+	
 }
