@@ -14,7 +14,6 @@ INDEX VERSION 1.127+C:\Users\david\Documents\GitHub\CS-240\gitWorkspace\.metadat
 1122677084.index
 3528370680.index
 1765406557.index
-3107682722.index
 3938408542.index
 576879869.index
 343594978.index

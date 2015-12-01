@@ -23,8 +23,8 @@ public class Main
             	ClientFacade.get().setHost(HOST);
             	ClientFacade.get().setPort(PORT);
             	
-            	Indexer indexerFrame 	= new Indexer("Indexer", null);
-            	indexerFrame.createComponents();
+            	Indexer indexerFrame 	= new Indexer("Indexer");
+//            	indexerFrame.createComponents();
             	
             	LoginGUI loginFrame = new LoginGUI("Login to GUI", indexerFrame);
             	indexerFrame.pack();

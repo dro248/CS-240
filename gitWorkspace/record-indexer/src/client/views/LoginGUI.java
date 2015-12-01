@@ -103,10 +103,7 @@ public class LoginGUI extends JFrame
 					
 					createGoodDialog(user);
 				}
-				catch(Exception e)
-				{
-					createBadDialog();
-				}
+				catch(Exception e) { createBadDialog(); }
 			}
 		});
 		
@@ -167,6 +164,7 @@ public class LoginGUI extends JFrame
 			{
 				goodDialog.setVisible(false);
 				
+				indexerFrame.initialize();
 				indexerFrame.setVisible(true);
 			}
 		});

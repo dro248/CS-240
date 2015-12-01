@@ -1,60 +1,54 @@
 package client.views.mainWindow;
 
 import java.awt.*;
-
+import java.awt.event.*;
 import javax.swing.*;
-
 import shared.model.Cell;
-
 import com.sun.org.apache.bcel.internal.classfile.Field;
-
 import client.views.mainWindow.bottom.left.*;
-import client.views.mainWindow.bottom.right.FieldHelpPanel;
-import client.views.mainWindow.bottom.right.ImageNavigationPanel;
+import client.views.mainWindow.bottom.right.*;
 import client.views.mainWindow.top.ImageViewer;
 import client.facade.*;
 
 @SuppressWarnings("serial")
 public class Indexer extends JFrame implements BatchStateListener
 {
-	JMenuBar menuBar;
-	JPanel buttonBar;
-	JButton zoomIn;
-	JButton zoomOut;
-	JButton invert;
-	JButton toggle;
-	JButton save;
-	JButton submit;
-	JSplitPane v_SplitPane;
-	JSplitPane h_SplitPane;
-	JComponent imageViewer;
-	JTabbedPane leftTabbedPane;
-	JTabbedPane rightTabbedPane;
-	JPanel tableEntry;
-	JPanel formEntry;
-	JPanel fieldHelp;
-	JPanel imageNavigation;
-	BatchState batchState;
-	
-	public Indexer(String title, BatchState _batchState)
+	private JMenuBar menuBar;
+	private JPanel buttonBar;
+	private JButton zoomInButton;
+	private JButton zoomOutButton;
+	private JButton invertButton;
+	private JButton toggleButton;
+	private JButton saveButton;
+	private JButton submitButton;
+	private JSplitPane v_SplitPane;
+	private JSplitPane h_SplitPane;
+	private JComponent imageViewer;
+	private JTabbedPane leftTabbedPane;
+	private JTabbedPane rightTabbedPane;
+	private JPanel tableEntry;
+	private JPanel formEntry;
+	private JPanel fieldHelp;
+	private JPanel imageNavigation;
+	private BatchState batchState;		// this is referencing the same batchState within the clientFacade
+
+	public Indexer(String title)
 	{
 		super(title);
-		
-		batchState = _batchState;
-		initialize();
-		createComponents();
 	}
 	
-	void initialize()
+	public void initialize()
 	{
+		setBatchState();
+		
 		menuBar 		= new WindowMenuBar();
 		buttonBar 		= new JPanel();
-		zoomIn 			= new JButton("Zoom In");
-		zoomOut			= new JButton("Zoom Out");
-		invert 			= new JButton("Invert Image");
-		toggle			= new JButton("Toggle Highlights");
-		save			= new JButton("Save");
-		submit			= new JButton("Submit");
+		zoomInButton	= new JButton("Zoom In");
+		zoomOutButton	= new JButton("Zoom Out");
+		invertButton	= new JButton("Invert Image");
+		toggleButton	= new JButton("Toggle Highlights");
+		saveButton		= new JButton("Save");
+		submitButton	= new JButton("Submit");
 		v_SplitPane 	= new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		h_SplitPane		= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		imageViewer		= new ImageViewer();
@@ -64,12 +58,15 @@ public class Indexer extends JFrame implements BatchStateListener
 		formEntry		= new FormEntryPanel();
 		fieldHelp		= new FieldHelpPanel();
 		imageNavigation = new ImageNavigationPanel();
+		
+		createComponents();
 	}
 	
-	public void createComponents()
+	private void createComponents()
 	{
-		this.setLocationRelativeTo(null);
-		this.setPreferredSize(new Dimension(1000, 700));
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLocation(batchState.getWindowPosition().get_X(), batchState.getWindowPosition().get_X());
+		this.setPreferredSize(batchState.getWindowSize());
 		this.setLayout(new BorderLayout());
 		
 		// Set MenuBar
@@ -77,12 +74,12 @@ public class Indexer extends JFrame implements BatchStateListener
 		
 		// Create buttonBar
 		buttonBar.setLayout(new BoxLayout(buttonBar, BoxLayout.X_AXIS));		
-		buttonBar.add(zoomIn);
-		buttonBar.add(zoomOut);
-		buttonBar.add(invert);
-		buttonBar.add(toggle);
-		buttonBar.add(save);
-		buttonBar.add(submit);
+		buttonBar.add(zoomInButton);
+		buttonBar.add(zoomOutButton);
+		buttonBar.add(invertButton);
+		buttonBar.add(toggleButton);
+		buttonBar.add(saveButton);
+		buttonBar.add(submitButton);
 		this.add(buttonBar, BorderLayout.NORTH);
 		
 		// setup TabbedPanes
@@ -106,9 +103,25 @@ public class Indexer extends JFrame implements BatchStateListener
 		
 		this.add(v_SplitPane, BorderLayout.CENTER);
 		
+		// add event_listeners for buttons
+		saveButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				batchState.save();
+			}
+		});
+		
 		
 		
 		this.pack();
+	}
+	
+	private void setBatchState()
+	{
+		batchState = ClientFacade.get().getBatchState();
+		batchState.addListener(this);
 	}
 
 	@Override
@@ -124,4 +137,7 @@ public class Indexer extends JFrame implements BatchStateListener
 		// TODO Auto-generated method stub
 		
 	}
+
+	public Coordinate getWindowPosition() 	{ return new Coordinate(this.getX(), this.getY()); }
+	public Dimension getWindowSize()		{ return this.getSize(); }
 }

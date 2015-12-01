@@ -41,6 +41,8 @@ public class ClientFacade
 			return null;
 		}
 	}
+	
+	public BatchState getBatchState() { return batchState; }
 
 	
 	
