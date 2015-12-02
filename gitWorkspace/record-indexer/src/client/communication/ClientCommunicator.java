@@ -11,18 +11,6 @@ import client.*;
 
 public class ClientCommunicator 
 {
-/*	private static ClientCommunicator singleton = null;
-	public static ClientCommunicator getSingleton()
-	{
-		if (singleton == null)
-		{
-			singleton = new ClientCommunicator("localhost", 45321);
-		}
-		
-		return singleton;
-	}*/
-	
-	
 	private static String SERVER_HOST = "localhost";
 	private static int SERVER_PORT = 8080;
 	private static String URL_PREFIX = "http://" + SERVER_HOST + ":" + SERVER_PORT;

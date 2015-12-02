@@ -17,4 +17,12 @@
 <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 <fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="client.facade.Coordinate"/>
+<fullyQualifiedTypeName name="client.views.LoginGUI"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="shared.model.Project"/>
+<fullyQualifiedTypeName name="client.facade.ClientFacade"/>
+<fullyQualifiedTypeName name="shared.communication.ProjectParams"/>
+<fullyQualifiedTypeName name="shared.communication.ProjectResult"/>
 </qualifiedTypeNameHistroy>

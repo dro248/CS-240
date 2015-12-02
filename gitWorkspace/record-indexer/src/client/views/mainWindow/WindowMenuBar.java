@@ -21,13 +21,14 @@ import client.views.LoginGUI;
 @SuppressWarnings("serial")
 public class WindowMenuBar extends JMenuBar implements BatchStateListener
 {
-	private JMenu 		fileMenu;
-	private JMenuItem 	downloadBatchButton;
-	private JMenuItem 	logoutButton;
-	private JMenuItem 	exitButton;
-	private BatchState 	batchState;	// this references the batchState in the ClientFacade
-	private Indexer 	indexerWindow;
-	private LoginGUI 	loginWindow;
+	private JMenu 				fileMenu;
+	private JMenuItem 			downloadBatchButton;
+	private JMenuItem 			logoutButton;
+	private JMenuItem 			exitButton;
+	private BatchState 			batchState;	// this references the batchState in the ClientFacade
+	private Indexer 			indexerWindow;
+	private LoginGUI	 		loginWindow;
+	private DownloadBatchGUI 	downloadDialog;
 	
 	public WindowMenuBar(Indexer _indexer, LoginGUI _login)
 	{	
@@ -50,8 +51,7 @@ public class WindowMenuBar extends JMenuBar implements BatchStateListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ProjectResult myProjects = ClientFacade.get().getProjects(new ProjectParams(
-						batchState.getUser().getUsername(), batchState.getUser().getPassword()));
+				downloadDialog.setVisible(true);
 			}
 		});
 		
@@ -81,6 +81,9 @@ public class WindowMenuBar extends JMenuBar implements BatchStateListener
 	
 	void initialize()
 	{
+		downloadDialog		= new DownloadBatchGUI();
+		downloadDialog.setVisible(false);
+		
 		fileMenu 			= new JMenu("File");
 		downloadBatchButton = new JMenuItem("Download Batch");
 		logoutButton 		= new JMenuItem("Logout");

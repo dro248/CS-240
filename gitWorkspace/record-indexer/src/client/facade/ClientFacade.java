@@ -73,4 +73,21 @@ public class ClientFacade
 			return null;
 		}
 	}
+
+	public ImgResult getSampleImage(ImgParams params)
+	{
+		ClientCommunicator cc = new ClientCommunicator(HOST, PORT);
+		
+		try
+		{
+			ImgResult results = cc.getSampleImage(params);
+			return results;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
+
+
 }
