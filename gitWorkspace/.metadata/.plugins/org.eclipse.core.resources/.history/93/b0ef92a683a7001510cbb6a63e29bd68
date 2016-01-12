@@ -1,0 +1,43 @@
+package hello;
+
+import java.util.Scanner;
+
+public class Hello
+{
+
+	public static void main(String[] args)
+	{
+		String name = "";
+		String age = "";
+		String coolestPerson = "";
+		String likesSports = "";
+		String favSport = "";
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("Hello! What is your name? ");
+		name = scanner.next();
+		
+		System.out.print("Hi " + name + "! How old are you? ");
+		age = scanner.next();
+		
+		System.out.print("Wait... so, your name is " + name + " and you are " + age + " years old! Cool!");
+		
+		System.out.print("Do you like sports? ");
+		likesSports = scanner.next();
+		
+		if(likesSports != "yes")
+		{
+			System.out.println("Oh... that's lame!");
+			return;
+		}
+		
+		System.out.print("What sport do you like the most? ");
+		favSport = scanner.next();
+		
+		System.out.println("Cool! " + favSport + " is my favorite sport, too!");
+		System.out.print("I'll bet I'm better than you!");
+
+	}
+
+}

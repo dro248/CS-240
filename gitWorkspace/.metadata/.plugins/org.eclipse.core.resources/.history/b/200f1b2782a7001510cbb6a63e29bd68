@@ -1,0 +1,21 @@
+package hello;
+
+import java.util.Scanner;
+
+public class Hello
+{
+
+	public static void main(String[] args)
+	{
+		String name = "";
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("Hello! What is your name? ");
+		name = scanner.next();
+		
+		System.out.print("Hi " + name);
+		
+
+	}
+
+}
