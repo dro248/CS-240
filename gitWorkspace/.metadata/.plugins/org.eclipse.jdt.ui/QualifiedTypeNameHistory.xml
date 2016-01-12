@@ -17,6 +17,7 @@
 <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 <fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<<<<<<< HEAD
 <fullyQualifiedTypeName name="javax.swing.JDialog"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
@@ -25,4 +26,14 @@
 <fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="server.database.DataImporter"/>
+=======
+<fullyQualifiedTypeName name="client.facade.Coordinate"/>
+<fullyQualifiedTypeName name="client.views.LoginGUI"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="shared.model.Project"/>
+<fullyQualifiedTypeName name="client.facade.ClientFacade"/>
+<fullyQualifiedTypeName name="shared.communication.ProjectParams"/>
+<fullyQualifiedTypeName name="shared.communication.ProjectResult"/>
+>>>>>>> 5796c66610736fcecb42408c4a4e973ed1f7f661
 </qualifiedTypeNameHistroy>
