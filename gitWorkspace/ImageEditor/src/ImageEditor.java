@@ -6,10 +6,10 @@ public class ImageEditor {
 	public static void main(String[] args) //throws FileNotFoundException 
 	{
 		
-		System.out.println("TESTING: This is my ImageEditor!!");
-		System.out.println("TESTING: This is my ImageEditor!!");
-		System.out.println("TESTING: This is my ImageEditor!!");
-		System.out.println("TESTING: This is my ImageEditor!!");
+//		System.out.println("TESTING: This is my ImageEditor!!");
+//		System.out.println("TESTING: This is my ImageEditor!!");
+//		System.out.println("TESTING: This is my ImageEditor!!");
+//		System.out.println("TESTING: This is my ImageEditor!!");
 		
 		try {
 			// Data Members
@@ -24,6 +24,7 @@ public class ImageEditor {
 			}
 			
 			img.output(args[1]);
+			System.out.println("Edit Complete!");
 		}
 		catch(FileNotFoundException e)
 		{

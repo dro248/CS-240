@@ -2,16 +2,9 @@
 <section name="Workbench">
 	<section name="CleanDialogSettings">
 		<item value="500" key="DIALOG_WIDTH"/>
-<<<<<<< HEAD
-		<item value="112" key="DIALOG_Y_ORIGIN"/>
-		<item value="433" key="DIALOG_X_ORIGIN"/>
-		<item value="378" key="DIALOG_HEIGHT"/>
-		<item value="false" key="TOGGLE_SELECTED"/>
-=======
 		<item value="false" key="TOGGLE_SELECTED"/>
 		<item value="378" key="DIALOG_HEIGHT"/>
-		<item value="470" key="DIALOG_X_ORIGIN"/>
-		<item value="178" key="DIALOG_Y_ORIGIN"/>
->>>>>>> 5796c66610736fcecb42408c4a4e973ed1f7f661
+		<item value="1850" key="DIALOG_X_ORIGIN"/>
+		<item value="35" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

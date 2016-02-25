@@ -15,7 +15,7 @@ public class Image {
 	// Constructor: attempts to automatically load image into memory
 	public Image(String fn)
 	{	
-		System.out.println(fn);		
+//		System.out.println(fn);		
 		in_filename = fn;
 		
 		try {
